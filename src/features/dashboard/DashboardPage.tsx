@@ -4,6 +4,7 @@ import FinancialSummaryWidget from "./widgets/FinancialSummaryWidget";
 import ExerciseSummaryWidget from "./widgets/ExerciseSummaryWidget";
 import RecentActivityWidget from "./widgets/RecentActivityWidget";
 import QuickStatsWidget from "./widgets/QuickStatsWidget";
+import ReminderBanners from "./reminders/ReminderBanners";
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -31,6 +32,8 @@ export default function DashboardPage() {
         </h1>
         <p className="text-sm text-gray-500">{today}</p>
       </div>
+
+      <ReminderBanners />
 
       <QuickStatsWidget />
 

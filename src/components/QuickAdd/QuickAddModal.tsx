@@ -3,7 +3,7 @@ import { useExpenses } from "../../features/expense/UseExpenses";
 import { useIncomes } from "../../features/income/UseIncomes";
 import { useExercises } from "../../features/exercise/UseExercises";
 import { useLearnings } from "../../features/learning/UseLearnings";
-import { KATEGORI_EXPENSE, KATEGORI_INCOME } from "../../types";
+import { KATEGORI_EXPENSE } from "../../types";
 
 type QuickType = "expense" | "income" | "exercise" | "learning";
 
