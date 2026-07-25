@@ -26,11 +26,11 @@ export default function DashboardPage() {
   return (
     <div className="max-w-3xl mx-auto p-4 space-y-4">
       <div>
-        <h1 className="text-xl font-semibold text-gray-900">
+        <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
           {getGreeting()}
           {user?.email ? `, ${user.email.split("@")[0]}` : ""}
         </h1>
-        <p className="text-sm text-gray-500">{today}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{today}</p>
       </div>
 
       <ReminderBanners />

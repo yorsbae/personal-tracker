@@ -332,7 +332,7 @@ export default function ExercisePage() {
                   </span>
                 </div>
                 <div className="flex gap-2 mt-1 flex-wrap">
-                  <span className="text-xs px-2 py-0.5 bg-orange-50 dark:bg-orange-950 text-orange-600 dark:text-orange-300 rounded-full">
+                  <span className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
                     {ex.tipe}
                   </span>
                   {ex.jarak && (

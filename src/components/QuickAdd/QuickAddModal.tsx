@@ -4,6 +4,7 @@ import { useIncomes } from "../../features/income/UseIncomes";
 import { useExercises } from "../../features/exercise/UseExercises";
 import { useLearnings } from "../../features/learning/UseLearnings";
 import { KATEGORI_EXPENSE } from "../../types";
+import CurrencyInput from "../ui/CurrencyInput";
 
 type QuickType = "expense" | "income" | "exercise" | "learning";
 
@@ -31,11 +32,14 @@ export default function QuickAddModal({ onClose }: QuickAddModalProps) {
   const { addLearning } = useLearnings();
 
   // State form per tipe - simpel, cuma field yang penting untuk "quick" entry
-  const [expenseForm, setExpenseForm] = useState({
-    nominal: "",
-    kategori: KATEGORI_EXPENSE[0] as string,
-  });
-  const [incomeForm, setIncomeForm] = useState({ nominal: "", sumber: "" });
+  const [expenseForm, setExpenseForm] = useState<{
+    nominal: number | null;
+    kategori: string;
+  }>({ nominal: null, kategori: KATEGORI_EXPENSE[0] });
+  const [incomeForm, setIncomeForm] = useState<{
+    nominal: number | null;
+    sumber: string;
+  }>({ nominal: null, sumber: "" });
   const [exerciseForm, setExerciseForm] = useState({
     sub_kategori: "",
     durasi: "",
@@ -49,7 +53,7 @@ export default function QuickAddModal({ onClose }: QuickAddModalProps) {
 
     if (selectedType === "expense") {
       result = await addExpense({
-        nominal: Number(expenseForm.nominal),
+        nominal: expenseForm.nominal ?? 0,
         kategori: expenseForm.kategori as any,
         metode_pembayaran: null,
         catatan: null,
@@ -57,7 +61,7 @@ export default function QuickAddModal({ onClose }: QuickAddModalProps) {
       });
     } else if (selectedType === "income") {
       result = await addIncome({
-        nominal: Number(incomeForm.nominal),
+        nominal: incomeForm.nominal ?? 0,
         sumber: incomeForm.sumber,
         kategori: null,
         catatan: null,
@@ -146,13 +150,12 @@ export default function QuickAddModal({ onClose }: QuickAddModalProps) {
 
             {selectedType === "expense" && (
               <div className="space-y-3">
-                <input
-                  type="number"
+                <CurrencyInput
                   autoFocus
-                  placeholder="Nominal (Rp)"
+                  placeholder="Nominal"
                   value={expenseForm.nominal}
-                  onChange={(e) =>
-                    setExpenseForm({ ...expenseForm, nominal: e.target.value })
+                  onChange={(val) =>
+                    setExpenseForm({ ...expenseForm, nominal: val })
                   }
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg"
                 />
@@ -174,13 +177,12 @@ export default function QuickAddModal({ onClose }: QuickAddModalProps) {
 
             {selectedType === "income" && (
               <div className="space-y-3">
-                <input
-                  type="number"
+                <CurrencyInput
                   autoFocus
-                  placeholder="Nominal (Rp)"
+                  placeholder="Nominal"
                   value={incomeForm.nominal}
-                  onChange={(e) =>
-                    setIncomeForm({ ...incomeForm, nominal: e.target.value })
+                  onChange={(val) =>
+                    setIncomeForm({ ...incomeForm, nominal: val })
                   }
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg"
                 />

@@ -1,6 +1,5 @@
 import { useExercises } from "../../exercise/UseExercises";
 
-// Cek apakah tanggal berada dalam 7 hari terakhir (termasuk hari ini)
 function isThisWeek(tanggal: string) {
   const d = new Date(tanggal);
   const now = new Date();
@@ -24,8 +23,10 @@ export default function ExerciseSummaryWidget() {
     .reduce((sum, e) => sum + (e.jarak ?? 0), 0);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
-      <h3 className="font-semibold text-gray-900 mb-4">Latihan Minggu Ini</h3>
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+      <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
+        Latihan Minggu Ini
+      </h3>
 
       {loading ? (
         <p className="text-gray-400 text-sm">Memuat...</p>
@@ -35,18 +36,20 @@ export default function ExerciseSummaryWidget() {
         <div className="grid grid-cols-3 gap-3">
           <div>
             <p className="text-xs text-gray-400 mb-1">Sesi</p>
-            <p className="font-semibold text-gray-900 text-lg">{totalSesi}</p>
+            <p className="font-semibold text-gray-900 dark:text-white text-lg">
+              {totalSesi}
+            </p>
           </div>
           <div>
             <p className="text-xs text-gray-400 mb-1">Durasi</p>
-            <p className="font-semibold text-gray-900 text-lg">
+            <p className="font-semibold text-gray-900 dark:text-white text-lg">
               {totalDurasi}
               <span className="text-xs font-normal text-gray-400"> mnt</span>
             </p>
           </div>
           <div>
             <p className="text-xs text-gray-400 mb-1">Jarak Lari</p>
-            <p className="font-semibold text-gray-900 text-lg">
+            <p className="font-semibold text-gray-900 dark:text-white text-lg">
               {totalJarak.toFixed(1)}
               <span className="text-xs font-normal text-gray-400"> km</span>
             </p>

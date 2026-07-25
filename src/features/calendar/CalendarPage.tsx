@@ -6,6 +6,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { useEvents } from "./UseEvents";
 import { useExpenses } from "../expense/UseExpenses";
+import { useIncomes } from "../income/UseIncomes";
 import { useExercises } from "../exercise/UseExercises";
 import EventModal from "./EventModal";
 import DaySummaryPanel from "./DaySummaryPanel";
@@ -32,7 +33,13 @@ interface CalendarDisplayEvent {
   resource: CalendarEvent;
 }
 
-// Format ringkas buat kotak kecil kalender: 50000 -> "50rb", 1500000 -> "1.5jt"
+interface DayIndicator {
+  expense: number;
+  income: number;
+  runningKm: number;
+  otherExerciseCount: number;
+}
+
 function formatRupiahSingkat(n: number): string {
   if (n >= 1_000_000)
     return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}jt`;
@@ -47,6 +54,7 @@ function dateKey(d: Date) {
 export default function CalendarPage() {
   const { events, addEvent, updateEvent, deleteEvent } = useEvents();
   const { expenses } = useExpenses();
+  const { incomes } = useIncomes();
   const { exercises } = useExercises();
 
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
@@ -72,22 +80,32 @@ export default function CalendarPage() {
     [events],
   );
 
-  // Peta total pengeluaran per tanggal - dipakai buat preview di kotak kalender
-  const expenseByDate = useMemo(() => {
-    const map: Record<string, number> = {};
-    for (const e of expenses) {
-      const key = dateKey(new Date(e.tanggal));
-      map[key] = (map[key] ?? 0) + e.nominal;
-    }
-    return map;
-  }, [expenses]);
+  // Gabungkan expense+income+exercise jadi 1 peta indikator per tanggal
+  const indicatorByDate = useMemo(() => {
+    const map: Record<string, DayIndicator> = {};
+    const ensure = (key: string) => {
+      if (!map[key])
+        map[key] = {
+          expense: 0,
+          income: 0,
+          runningKm: 0,
+          otherExerciseCount: 0,
+        };
+      return map[key];
+    };
 
-  // Peta "ada olahraga tidak" per tanggal - buat indikator titik kecil
-  const exerciseDateSet = useMemo(() => {
-    const set = new Set<string>();
-    for (const ex of exercises) set.add(dateKey(new Date(ex.tanggal)));
-    return set;
-  }, [exercises]);
+    for (const e of expenses)
+      ensure(dateKey(new Date(e.tanggal))).expense += e.nominal;
+    for (const i of incomes)
+      ensure(dateKey(new Date(i.tanggal))).income += i.nominal;
+    for (const ex of exercises) {
+      const entry = ensure(dateKey(new Date(ex.tanggal)));
+      if (ex.tipe === "Running" && ex.jarak) entry.runningKm += ex.jarak;
+      else if (ex.tipe !== "Running") entry.otherExerciseCount += 1;
+    }
+
+    return map;
+  }, [expenses, incomes, exercises]);
 
   const handleSelectSlot = useCallback((slotInfo: { start: Date }) => {
     setSelectedDate(slotInfo.start);
@@ -137,34 +155,38 @@ export default function CalendarPage() {
     };
   }, []);
 
-  // Custom render untuk header tiap kotak tanggal di tampilan Bulan:
-  // nomor tanggal + preview pengeluaran (kalau ada) + titik indikator olahraga
+  // Custom header kotak tanggal: nomor tanggal + preview singkat semua jenis aktivitas hari itu
   const CustomDateHeader = useCallback(
     ({ date: cellDate, label }: { date: Date; label: string }) => {
-      const key = dateKey(cellDate);
-      const totalExpense = expenseByDate[key];
-      const hasExercise = exerciseDateSet.has(key);
+      const ind = indicatorByDate[dateKey(cellDate)];
 
       return (
-        <div className="flex flex-col items-end px-1 pt-1 gap-0.5">
-          <div className="flex items-center gap-1">
-            {hasExercise && (
-              <span
-                className="w-1.5 h-1.5 rounded-full bg-orange-400"
-                title="Ada olahraga"
-              />
-            )}
-            <span>{label}</span>
-          </div>
-          {totalExpense && (
-            <span className="text-[10px] font-medium text-red-500 dark:text-red-400 leading-none">
-              -{formatRupiahSingkat(totalExpense)}
+        <div className="flex flex-col items-end px-1 pt-1 gap-0.5 text-[10px] leading-tight">
+          <span className="text-xs">{label}</span>
+          {ind?.income > 0 && (
+            <span className="text-green-600 dark:text-green-400 font-medium">
+              +{formatRupiahSingkat(ind.income)}
+            </span>
+          )}
+          {ind?.expense > 0 && (
+            <span className="text-red-500 dark:text-red-400 font-medium">
+              -{formatRupiahSingkat(ind.expense)}
+            </span>
+          )}
+          {ind?.runningKm > 0 && (
+            <span className="text-orange-500 dark:text-orange-400 font-medium">
+              🏃{ind.runningKm}km
+            </span>
+          )}
+          {ind?.otherExerciseCount > 0 && (
+            <span className="text-orange-500 dark:text-orange-400 font-medium">
+              💪{ind.otherExerciseCount}x
             </span>
           )}
         </div>
       );
     },
-    [expenseByDate, exerciseDateSet],
+    [indicatorByDate],
   );
 
   return (
@@ -186,14 +208,13 @@ export default function CalendarPage() {
       </div>
 
       <p className="text-xs text-gray-400 -mt-2">
-        💡 Klik tanggal manapun untuk lihat ringkasan aktivitas hari itu (semua
-        modul). Pengeluaran & olahraga sudah muncul preview langsung di kotak
-        tanggal.
+        💡 Klik tanggal untuk ringkasan lengkap. Pengeluaran/pemasukan/olahraga
+        sudah muncul preview di kotak tanggal.
       </p>
 
       <div
         className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4"
-        style={{ height: "650px" }}
+        style={{ height: "680px" }}
       >
         <Calendar
           localizer={localizer}

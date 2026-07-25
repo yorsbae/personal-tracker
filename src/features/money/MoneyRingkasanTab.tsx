@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMoneySummary } from "./UseMoneySummary";
 import CurrencyInput from "../../components/ui/CurrencyInput";
+import CategoryPieChart from "../../components/Analytics/CategoryPieChart";
 
 function formatRupiah(n: number) {
   return new Intl.NumberFormat("id-ID", {
@@ -217,6 +218,13 @@ export default function MoneyRingkasanTab() {
             </p>
           </>
         )}
+      </div>
+
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+          Breakdown Pengeluaran per Kategori
+        </h3>
+        <CategoryPieChart data={expensePerKategori} />
       </div>
 
       {target?.budget_kategori &&

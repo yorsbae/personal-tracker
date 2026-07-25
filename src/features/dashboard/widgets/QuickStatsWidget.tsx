@@ -36,11 +36,15 @@ export default function QuickStatsWidget() {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-white rounded-xl border border-gray-200 p-4 text-center"
+          className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 text-center"
         >
-          <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
+          <p className="text-2xl font-semibold text-gray-900 dark:text-white">
+            {stat.value}
+          </p>
           <p className="text-xs text-gray-400 mt-1">{stat.label}</p>
-          <p className="text-[10px] text-gray-300">7 hari terakhir</p>
+          <p className="text-[10px] text-gray-300 dark:text-gray-600">
+            7 hari terakhir
+          </p>
         </div>
       ))}
     </div>

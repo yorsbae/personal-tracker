@@ -30,8 +30,10 @@ export default function TodayScheduleWidget() {
     );
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
-      <h3 className="font-semibold text-gray-900 mb-4">Jadwal Hari Ini</h3>
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+      <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
+        Jadwal Hari Ini
+      </h3>
 
       {loading ? (
         <p className="text-gray-400 text-sm">Memuat...</p>
@@ -48,7 +50,9 @@ export default function TodayScheduleWidget() {
               <span className="text-xs text-gray-400 w-12 shrink-0">
                 {formatJam(e.tanggal_mulai)}
               </span>
-              <span className="text-sm text-gray-900 truncate">{e.judul}</span>
+              <span className="text-sm text-gray-900 dark:text-white truncate">
+                {e.judul}
+              </span>
               <span className="text-xs text-gray-400 ml-auto shrink-0">
                 {EVENT_TIPE_LABEL[e.tipe]}
               </span>

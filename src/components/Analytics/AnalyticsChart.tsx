@@ -1,6 +1,6 @@
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
@@ -64,7 +64,7 @@ export default function AnalyticsChart({
 
       <div style={{ width: "100%", height: 200 }}>
         <ResponsiveContainer>
-          <BarChart data={series}>
+          <LineChart data={series}>
             <CartesianGrid
               strokeDasharray="3 3"
               stroke="#e5e7eb"
@@ -89,8 +89,15 @@ export default function AnalyticsChart({
               ]}
               contentStyle={{ fontSize: 12, borderRadius: 8 }}
             />
-            <Bar dataKey="value" fill={color} radius={[4, 4, 0, 0]} />
-          </BarChart>
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke={color}
+              strokeWidth={2.5}
+              dot={{ r: 3, fill: color }}
+              activeDot={{ r: 5 }}
+            />
+          </LineChart>
         </ResponsiveContainer>
       </div>
 
