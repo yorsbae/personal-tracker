@@ -9,8 +9,10 @@ import {
   ACTIVITY_LEVELS,
 } from "../../utils/bodyCalculations";
 import { exportAllData } from "../../utils/exportData";
+import { supabase } from "../../lib/supabase";
 
 const initialForm: ProfileInput = {
+  username: null,
   nama: "",
   umur: null,
   jenis_kelamin: "Pria",
@@ -36,9 +38,19 @@ export default function ProfilePage() {
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState("");
 
+  const [usernameInput, setUsernameInput] = useState("");
+  const [usernameMsg, setUsernameMsg] = useState("");
+  const [isSavingUsername, setIsSavingUsername] = useState(false);
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [passwordMsg, setPasswordMsg] = useState("");
+  const [isSavingPassword, setIsSavingPassword] = useState(false);
+
   useEffect(() => {
     if (profile) {
       setForm({
+        username: profile.username,
         nama: profile.nama,
         umur: profile.umur,
         jenis_kelamin: profile.jenis_kelamin ?? "Pria",
@@ -47,6 +59,7 @@ export default function ProfilePage() {
         target_berat_badan: profile.target_berat_badan,
         aktivitas_level: profile.aktivitas_level ?? "Sedang",
       });
+      setUsernameInput(profile.username ?? "");
     }
   }, [profile]);
 
@@ -107,6 +120,48 @@ export default function ProfilePage() {
     const result = await exportAllData();
     if (result.error) setExportError(result.error);
     setIsExporting(false);
+  };
+
+  const handleSaveUsername = async () => {
+    setUsernameMsg("");
+    if (!/^[a-zA-Z0-9_]{3,20}$/.test(usernameInput)) {
+      setUsernameMsg("Username 3-20 karakter, cuma huruf/angka/underscore");
+      return;
+    }
+    setIsSavingUsername(true);
+    const result = await saveProfile({
+      username: usernameInput,
+    } as Partial<ProfileInput>);
+    setUsernameMsg(
+      result.error
+        ? `Gagal: ${result.error.includes("duplicate") || result.error.includes("unique") ? "Username sudah dipakai" : result.error}`
+        : "Username berhasil diubah!",
+    );
+    setIsSavingUsername(false);
+    setTimeout(() => setUsernameMsg(""), 3000);
+  };
+
+  const handleChangePassword = async () => {
+    setPasswordMsg("");
+    if (newPassword.length < 6) {
+      setPasswordMsg("Password minimal 6 karakter");
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      setPasswordMsg("Konfirmasi password tidak sama");
+      return;
+    }
+    setIsSavingPassword(true);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    setPasswordMsg(
+      error ? `Gagal: ${error.message}` : "Password berhasil diubah!",
+    );
+    if (!error) {
+      setNewPassword("");
+      setConfirmNewPassword("");
+    }
+    setIsSavingPassword(false);
+    setTimeout(() => setPasswordMsg(""), 3000);
   };
 
   if (loading)
@@ -223,6 +278,70 @@ export default function ProfilePage() {
         {saveMessage && (
           <p className="text-xs text-center text-gray-500">{saveMessage}</p>
         )}
+      </div>
+
+      {/* Akun: Username & Password */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 space-y-4">
+        <h2 className="font-semibold text-gray-900 dark:text-white">Akun</h2>
+
+        <div className="space-y-2">
+          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400">
+            Username (untuk login)
+          </label>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={usernameInput}
+              onChange={(e) => setUsernameInput(e.target.value)}
+              className={inputClass + " flex-1"}
+              placeholder="username"
+            />
+            <button
+              onClick={handleSaveUsername}
+              disabled={isSavingUsername}
+              className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg text-sm"
+            >
+              {isSavingUsername ? "..." : "Simpan"}
+            </button>
+          </div>
+          {usernameMsg && (
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {usernameMsg}
+            </p>
+          )}
+        </div>
+
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
+          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400">
+            Ganti Password
+          </label>
+          <input
+            type="password"
+            placeholder="Password baru"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className={inputClass}
+          />
+          <input
+            type="password"
+            placeholder="Konfirmasi password baru"
+            value={confirmNewPassword}
+            onChange={(e) => setConfirmNewPassword(e.target.value)}
+            className={inputClass}
+          />
+          <button
+            onClick={handleChangePassword}
+            disabled={isSavingPassword}
+            className="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white py-2 rounded-lg text-sm"
+          >
+            {isSavingPassword ? "Menyimpan..." : "Ganti Password"}
+          </button>
+          {passwordMsg && (
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {passwordMsg}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* BMI/BMR/TDEE */}

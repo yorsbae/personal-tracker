@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 export interface Profile {
   id: string;
   nama: string | null;
+  username: string | null;
   umur: number | null;
   jenis_kelamin: string | null;
   tinggi_badan: number | null; // cm
@@ -26,7 +27,7 @@ export function useProfile() {
     const { data, error } = await supabase
       .from("profiles")
       .select(
-        "id, nama, umur, jenis_kelamin, tinggi_badan, berat_badan, target_berat_badan, aktivitas_level",
+        "id, nama, username, umur, jenis_kelamin, tinggi_badan, berat_badan, target_berat_badan, aktivitas_level",
       )
       .eq("id", user.id)
       .maybeSingle();

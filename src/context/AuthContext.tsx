@@ -16,6 +16,7 @@ interface AuthContextType {
   signUp: (
     email: string,
     password: string,
+    username: string,
   ) => Promise<{ error: string | null }>;
   signIn: (
     email: string,
@@ -58,15 +59,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Fungsi untuk register akun baru
-  const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({ email, password });
+  // Fungsi untuk register akun baru, sekaligus simpan username pilihan user
+  const signUp = async (email: string, password: string, username: string) => {
+    const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) return { error: error.message };
+
+    // Simpan username ke profiles - cuma bisa langsung berhasil kalau "Confirm email"
+    // dimatikan di Supabase (jadi session langsung aktif setelah signUp)
+    if (data.user) {
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .upsert({ id: data.user.id, username });
+
+      if (profileError) {
+        // Kemungkinan besar username sudah dipakai orang lain (kolom unique)
+        if (
+          profileError.message.includes("duplicate") ||
+          profileError.message.includes("unique")
+        ) {
+          return { error: "Username sudah dipakai, coba yang lain" };
+        }
+        return { error: profileError.message };
+      }
+    }
+
     return { error: null };
   };
 
-  // Fungsi untuk login
-  const signIn = async (email: string, password: string) => {
+  // Login bisa pakai email ATAU username - kalau bukan format email,
+  // cari dulu email yang terhubung ke username itu lewat fungsi database
+  const signIn = async (identifier: string, password: string) => {
+    let email = identifier;
+
+    if (!identifier.includes("@")) {
+      const { data, error: lookupError } = await supabase.rpc(
+        "get_email_by_username",
+        {
+          input_username: identifier,
+        },
+      );
+      if (lookupError || !data) {
+        return { error: "Username tidak ditemukan" };
+      }
+      email = data as string;
+    }
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,

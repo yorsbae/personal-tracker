@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { KATEGORI_INCOME, type Income, type IncomeInput } from "../../types";
+import CurrencyInput from "../../components/ui/CurrencyInput";
 
 interface IncomeFormProps {
   onSubmit: (input: IncomeInput) => Promise<{ error: string | null }>;
@@ -14,6 +15,9 @@ const initialForm: IncomeInput = {
   catatan: "",
   tanggal: new Date().toISOString().split("T")[0],
 };
+
+const inputClass =
+  "w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500";
 
 export default function IncomeForm({
   onSubmit,
@@ -38,15 +42,12 @@ export default function IncomeForm({
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-
     const { error } = await onSubmit(form);
-
     if (error) {
       setError(error);
       setIsSubmitting(false);
       return;
     }
-
     if (!editingIncome) setForm(initialForm);
     setIsSubmitting(false);
   };
@@ -54,9 +55,9 @@ export default function IncomeForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-5 rounded-xl border border-gray-200 space-y-4"
+      className="bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 space-y-4"
     >
-      <h2 className="font-semibold text-gray-900">
+      <h2 className="font-semibold text-gray-900 dark:text-white">
         {editingIncome ? "Edit Pemasukan" : "Tambah Pemasukan"}
       </h2>
 
@@ -68,30 +69,25 @@ export default function IncomeForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Nominal (Rp)
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Nominal
           </label>
-          <input
-            type="number"
-            required
-            min={0}
-            value={form.nominal || ""}
-            onChange={(e) =>
-              setForm({ ...form, nominal: Number(e.target.value) })
-            }
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
-            placeholder="5000000"
+          <CurrencyInput
+            value={form.nominal || null}
+            onChange={(val) => setForm({ ...form, nominal: val ?? 0 })}
+            className={inputClass}
+            placeholder="5.000.000"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Kategori
           </label>
           <select
             value={form.kategori ?? ""}
             onChange={(e) => setForm({ ...form, kategori: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
+            className={inputClass}
           >
             {KATEGORI_INCOME.map((kat) => (
               <option key={kat} value={kat}>
@@ -102,7 +98,7 @@ export default function IncomeForm({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Sumber
           </label>
           <input
@@ -110,13 +106,13 @@ export default function IncomeForm({
             required
             value={form.sumber}
             onChange={(e) => setForm({ ...form, sumber: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
+            className={inputClass}
             placeholder="Kantor ABC, Klien X..."
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Tanggal
           </label>
           <input
@@ -124,20 +120,20 @@ export default function IncomeForm({
             required
             value={form.tanggal}
             onChange={(e) => setForm({ ...form, tanggal: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
+            className={inputClass}
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Catatan
         </label>
         <textarea
           value={form.catatan ?? ""}
           onChange={(e) => setForm({ ...form, catatan: e.target.value })}
           rows={2}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
+          className={inputClass}
           placeholder="Opsional..."
         />
       </div>
@@ -146,7 +142,7 @@ export default function IncomeForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex-1 bg-gray-900 text-white py-2.5 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50 transition"
+          className="flex-1 bg-gray-900 dark:bg-white dark:text-gray-900 text-white py-2.5 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition"
         >
           {isSubmitting ? "Menyimpan..." : editingIncome ? "Update" : "Simpan"}
         </button>
@@ -154,7 +150,7 @@ export default function IncomeForm({
           <button
             type="button"
             onClick={onCancelEdit}
-            className="px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition"
+            className="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
           >
             Batal
           </button>

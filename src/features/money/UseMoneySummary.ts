@@ -3,57 +3,74 @@ import { useExpenses } from "../expense/UseExpenses";
 import { useIncomes } from "../income/UseIncomes";
 import { useBudgetTarget } from "./UseBudgetTarget";
 
-function isInMonth(tanggal: string, monthsAgo: number) {
+function isInMonth(tanggal: string, monthDate: Date) {
   const d = new Date(tanggal);
-  const target = new Date();
-  target.setMonth(target.getMonth() - monthsAgo);
   return (
-    d.getMonth() === target.getMonth() &&
-    d.getFullYear() === target.getFullYear()
+    d.getMonth() === monthDate.getMonth() &&
+    d.getFullYear() === monthDate.getFullYear()
   );
 }
 
-export function useMoneySummary() {
+function isCurrentMonth(monthDate: Date) {
+  const now = new Date();
+  return (
+    monthDate.getMonth() === now.getMonth() &&
+    monthDate.getFullYear() === now.getFullYear()
+  );
+}
+
+// monthOffset: 0 = bulan yang sedang dipilih, 1 = 1 bulan sebelum itu, dst
+function shiftMonth(date: Date, offset: number) {
+  const d = new Date(date);
+  d.setMonth(d.getMonth() - offset);
+  return d;
+}
+
+export function useMoneySummary(selectedMonth: Date) {
   const { expenses, loading: le } = useExpenses();
   const { incomes, loading: li } = useIncomes();
-  const { target, loading: lt, saveTarget } = useBudgetTarget();
+  const { target, loading: lt, saveTarget } = useBudgetTarget(selectedMonth);
 
   const loading = le || li || lt;
 
-  // ---- Angka bulan ini ----
   const expenseThisMonth = useMemo(
-    () => expenses.filter((e) => isInMonth(e.tanggal, 0)),
-    [expenses],
+    () => expenses.filter((e) => isInMonth(e.tanggal, selectedMonth)),
+    [expenses, selectedMonth],
   );
   const incomeThisMonth = useMemo(
-    () => incomes.filter((i) => isInMonth(i.tanggal, 0)),
-    [incomes],
+    () => incomes.filter((i) => isInMonth(i.tanggal, selectedMonth)),
+    [incomes, selectedMonth],
   );
 
   const totalExpense = expenseThisMonth.reduce((sum, e) => sum + e.nominal, 0);
   const totalIncome = incomeThisMonth.reduce((sum, i) => sum + i.nominal, 0);
   const saldo = totalIncome - totalExpense;
 
-  // Breakdown pengeluaran per kategori bulan ini
   const expensePerKategori = useMemo(() => {
     const map: Record<string, number> = {};
-    for (const e of expenseThisMonth) {
+    for (const e of expenseThisMonth)
       map[e.kategori] = (map[e.kategori] ?? 0) + e.nominal;
-    }
     return map;
   }, [expenseThisMonth]);
 
-  // ---- Saran otomatis: rata-rata 3 bulan terakhir (bulan -1, -2, -3, TIDAK termasuk bulan ini) ----
+  // Saran otomatis HANYA relevan kalau lagi lihat bulan berjalan (bukan bulan lampau)
   const suggestion = useMemo(() => {
-    const monthsBack = [1, 2, 3];
+    if (!isCurrentMonth(selectedMonth)) {
+      return {
+        suggestedSaving: null,
+        suggestedBudget: {},
+        hasEnoughHistory: false,
+      };
+    }
 
-    // Saran saving = rata-rata (income - expense) 3 bulan terakhir
+    const monthsBack = [1, 2, 3];
     const netPerMonth = monthsBack.map((m) => {
+      const monthDate = shiftMonth(selectedMonth, m);
       const inc = incomes
-        .filter((i) => isInMonth(i.tanggal, m))
+        .filter((i) => isInMonth(i.tanggal, monthDate))
         .reduce((s, i) => s + i.nominal, 0);
       const exp = expenses
-        .filter((e) => isInMonth(e.tanggal, m))
+        .filter((e) => isInMonth(e.tanggal, monthDate))
         .reduce((s, e) => s + e.nominal, 0);
       return inc - exp;
     });
@@ -63,14 +80,13 @@ export function useMoneySummary() {
         ? Math.round(validNet.reduce((a, b) => a + b, 0) / validNet.length)
         : null;
 
-    // Saran budget per kategori = rata-rata pengeluaran kategori itu 3 bulan terakhir, +10% buffer
     const kategoriTotals: Record<string, number[]> = {};
     for (const m of monthsBack) {
-      const expMonth = expenses.filter((e) => isInMonth(e.tanggal, m));
+      const monthDate = shiftMonth(selectedMonth, m);
+      const expMonth = expenses.filter((e) => isInMonth(e.tanggal, monthDate));
       const perKategori: Record<string, number> = {};
-      for (const e of expMonth) {
+      for (const e of expMonth)
         perKategori[e.kategori] = (perKategori[e.kategori] ?? 0) + e.nominal;
-      }
       for (const [kat, val] of Object.entries(perKategori)) {
         if (!kategoriTotals[kat]) kategoriTotals[kat] = [];
         kategoriTotals[kat].push(val);
@@ -78,15 +94,17 @@ export function useMoneySummary() {
     }
     const suggestedBudget: Record<string, number> = {};
     for (const [kat, vals] of Object.entries(kategoriTotals)) {
-      const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
-      suggestedBudget[kat] = Math.round(avg * 1.1); // +10% buffer
+      suggestedBudget[kat] = Math.round(
+        (vals.reduce((a, b) => a + b, 0) / vals.length) * 1.1,
+      );
     }
 
-    // Ada cukup data historis kalau minimal 1 bulan sebelumnya ada transaksi
-    const hasEnoughHistory = validNet.length > 0;
-
-    return { suggestedSaving, suggestedBudget, hasEnoughHistory };
-  }, [expenses, incomes]);
+    return {
+      suggestedSaving,
+      suggestedBudget,
+      hasEnoughHistory: validNet.length > 0,
+    };
+  }, [expenses, incomes, selectedMonth]);
 
   return {
     loading,

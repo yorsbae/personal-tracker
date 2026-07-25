@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMoneySummary } from "./UseMoneySummary";
+import CurrencyInput from "../../components/ui/CurrencyInput";
 
 function formatRupiah(n: number) {
   return new Intl.NumberFormat("id-ID", {
@@ -9,7 +10,14 @@ function formatRupiah(n: number) {
   }).format(n);
 }
 
+function formatBulan(date: Date) {
+  return date.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+}
+
 export default function MoneyRingkasanTab() {
+  // Bulan yang sedang dilihat - default bulan berjalan, bisa digeser mundur/maju
+  const [selectedMonth, setSelectedMonth] = useState(() => new Date());
+
   const {
     loading,
     totalExpense,
@@ -19,10 +27,37 @@ export default function MoneyRingkasanTab() {
     target,
     saveTarget,
     suggestion,
-  } = useMoneySummary();
+  } = useMoneySummary(selectedMonth);
 
   const [editingSaving, setEditingSaving] = useState(false);
-  const [savingInput, setSavingInput] = useState("");
+  const [savingInput, setSavingInput] = useState<number | null>(null);
+
+  const goToPreviousMonth = () => {
+    setSelectedMonth((prev) => {
+      const d = new Date(prev);
+      d.setMonth(d.getMonth() - 1);
+      return d;
+    });
+    setEditingSaving(false);
+  };
+
+  const goToNextMonth = () => {
+    setSelectedMonth((prev) => {
+      const d = new Date(prev);
+      d.setMonth(d.getMonth() + 1);
+      return d;
+    });
+    setEditingSaving(false);
+  };
+
+  const goToThisMonth = () => {
+    setSelectedMonth(new Date());
+    setEditingSaving(false);
+  };
+
+  const isCurrentMonth =
+    selectedMonth.getMonth() === new Date().getMonth() &&
+    selectedMonth.getFullYear() === new Date().getFullYear();
 
   if (loading)
     return <p className="text-gray-400 text-sm py-8 text-center">Memuat...</p>;
@@ -52,32 +87,67 @@ export default function MoneyRingkasanTab() {
 
   return (
     <div className="space-y-4">
+      {/* Month Picker */}
+      <div className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 px-3 py-2">
+        <button
+          onClick={goToPreviousMonth}
+          className="text-gray-400 hover:text-gray-900 dark:hover:text-white px-2 py-1"
+        >
+          ←
+        </button>
+        <div className="text-center">
+          <p className="text-sm font-medium text-gray-900 dark:text-white">
+            {formatBulan(selectedMonth)}
+          </p>
+          {!isCurrentMonth && (
+            <button
+              onClick={goToThisMonth}
+              className="text-xs text-blue-500 hover:underline"
+            >
+              Kembali ke bulan ini
+            </button>
+          )}
+        </div>
+        <button
+          onClick={goToNextMonth}
+          className="text-gray-400 hover:text-gray-900 dark:hover:text-white px-2 py-1"
+        >
+          →
+        </button>
+      </div>
+
       {/* Angka utama */}
       <div className="grid grid-cols-3 gap-3">
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
           <p className="text-xs text-gray-400 mb-1">Pemasukan</p>
-          <p className="font-semibold text-green-600 text-sm">
+          <p className="font-semibold text-green-600 dark:text-green-400 text-sm">
             {formatRupiah(totalIncome)}
           </p>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
           <p className="text-xs text-gray-400 mb-1">Pengeluaran</p>
-          <p className="font-semibold text-red-600 text-sm">
+          <p className="font-semibold text-red-600 dark:text-red-400 text-sm">
             {formatRupiah(totalExpense)}
           </p>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
           <p className="text-xs text-gray-400 mb-1">Saldo</p>
           <p
-            className={`font-semibold text-sm ${saldo >= 0 ? "text-gray-900 dark:text-white" : "text-red-600"}`}
+            className={`font-semibold text-sm ${saldo >= 0 ? "text-gray-900 dark:text-white" : "text-red-600 dark:text-red-400"}`}
           >
             {formatRupiah(saldo)}
           </p>
         </div>
       </div>
 
-      {/* Saran otomatis - cuma muncul kalau belum ada target diset dan ada cukup histori */}
-      {!targetSaving && suggestion.hasEnoughHistory && (
+      {!isCurrentMonth && (
+        <p className="text-xs text-gray-400 text-center">
+          📅 Kamu sedang melihat data bulan lampau — saran otomatis hanya
+          tersedia untuk bulan berjalan.
+        </p>
+      )}
+
+      {isCurrentMonth && !targetSaving && suggestion.hasEnoughHistory && (
         <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
           <p className="text-sm text-blue-900 dark:text-blue-200 mb-2">
             💡 Berdasarkan rata-rata 3 bulan terakhir, saran target nabung bulan
@@ -103,11 +173,10 @@ export default function MoneyRingkasanTab() {
         </div>
       )}
 
-      {/* Target Saving - progress bar */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
         <div className="flex items-center justify-between mb-2">
           <h3 className="font-semibold text-gray-900 dark:text-white">
-            Target Nabung Bulan Ini
+            Target Nabung — {formatBulan(selectedMonth)}
           </h3>
           {targetSaving && (
             <button
@@ -121,18 +190,14 @@ export default function MoneyRingkasanTab() {
 
         {editingSaving || !targetSaving ? (
           <div className="flex gap-2">
-            <input
-              type="number"
-              autoFocus
-              placeholder="Target nabung (Rp)"
+            <CurrencyInput
               value={savingInput}
-              onChange={(e) => setSavingInput(e.target.value)}
+              onChange={setSavingInput}
+              placeholder="Target nabung"
               className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg"
             />
             <button
-              onClick={() =>
-                savingInput && handleSetTarget(Number(savingInput))
-              }
+              onClick={() => savingInput && handleSetTarget(savingInput)}
               className="bg-gray-900 dark:bg-white dark:text-gray-900 text-white px-4 py-2 rounded-lg text-sm"
             >
               Simpan
@@ -154,7 +219,6 @@ export default function MoneyRingkasanTab() {
         )}
       </div>
 
-      {/* Budget per kategori */}
       {target?.budget_kategori &&
         Object.keys(target.budget_kategori).length > 0 && (
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">

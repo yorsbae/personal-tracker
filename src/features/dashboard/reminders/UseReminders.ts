@@ -22,7 +22,7 @@ function isToday(tanggal: string) {
 }
 
 export function useReminders(): Reminder[] {
-  const { target, expensePerKategori } = useMoneySummary();
+  const { target, expensePerKategori } = useMoneySummary(new Date());
   const { exercises } = useExercises();
   const { journals } = useJournals();
   const { projects } = useCreativeProjects();

@@ -7,6 +7,7 @@ import {
   type Wishlist,
   type WishlistInput,
 } from "../../types";
+import CurrencyInput from "../../components/ui/CurrencyInput";
 
 function formatRupiah(n: number) {
   return new Intl.NumberFormat("id-ID", {
@@ -133,29 +134,18 @@ export default function WishlistTab() {
               ))}
             </select>
 
-            <input
-              type="number"
-              placeholder="Estimasi biaya (Rp, opsional)"
-              value={form.estimasi_biaya ?? ""}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  estimasi_biaya: e.target.value
-                    ? Number(e.target.value)
-                    : null,
-                })
-              }
+            <CurrencyInput
+              value={form.estimasi_biaya}
+              onChange={(val) => setForm({ ...form, estimasi_biaya: val })}
               className="px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg"
+              placeholder="Estimasi biaya (opsional)"
             />
 
-            <input
-              type="number"
-              placeholder="Sudah terkumpul (Rp)"
-              value={form.terkumpul ?? ""}
-              onChange={(e) =>
-                setForm({ ...form, terkumpul: Number(e.target.value) })
-              }
+            <CurrencyInput
+              value={form.terkumpul}
+              onChange={(val) => setForm({ ...form, terkumpul: val ?? 0 })}
               className="px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg"
+              placeholder="Sudah terkumpul"
             />
 
             <select

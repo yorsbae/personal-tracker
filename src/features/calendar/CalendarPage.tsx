@@ -5,6 +5,8 @@ import { id } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { useEvents } from "./UseEvents";
+import { useExpenses } from "../expense/UseExpenses";
+import { useExercises } from "../exercise/UseExercises";
 import EventModal from "./EventModal";
 import DaySummaryPanel from "./DaySummaryPanel";
 import {
@@ -30,17 +32,29 @@ interface CalendarDisplayEvent {
   resource: CalendarEvent;
 }
 
+// Format ringkas buat kotak kecil kalender: 50000 -> "50rb", 1500000 -> "1.5jt"
+function formatRupiahSingkat(n: number): string {
+  if (n >= 1_000_000)
+    return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}jt`;
+  if (n >= 1_000) return `${Math.round(n / 1000)}rb`;
+  return `${n}`;
+}
+
+function dateKey(d: Date) {
+  return d.toDateString();
+}
+
 export default function CalendarPage() {
   const { events, addEvent, updateEvent, deleteEvent } = useEvents();
+  const { expenses } = useExpenses();
+  const { exercises } = useExercises();
 
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
   const [slotRange, setSlotRange] = useState<{ start: Date; end: Date } | null>(
     null,
   );
-
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null); // untuk panel ringkasan harian
-
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [view, setView] = useState<View>("month");
   const [date, setDate] = useState(new Date());
 
@@ -58,19 +72,33 @@ export default function CalendarPage() {
     [events],
   );
 
-  // Klik tanggal kosong -> buka PANEL RINGKASAN HARIAN (bukan langsung modal tambah event)
+  // Peta total pengeluaran per tanggal - dipakai buat preview di kotak kalender
+  const expenseByDate = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const e of expenses) {
+      const key = dateKey(new Date(e.tanggal));
+      map[key] = (map[key] ?? 0) + e.nominal;
+    }
+    return map;
+  }, [expenses]);
+
+  // Peta "ada olahraga tidak" per tanggal - buat indikator titik kecil
+  const exerciseDateSet = useMemo(() => {
+    const set = new Set<string>();
+    for (const ex of exercises) set.add(dateKey(new Date(ex.tanggal)));
+    return set;
+  }, [exercises]);
+
   const handleSelectSlot = useCallback((slotInfo: { start: Date }) => {
     setSelectedDate(slotInfo.start);
   }, []);
 
-  // Klik event yang sudah ada -> langsung buka modal EDIT event itu
   const handleSelectEvent = useCallback((event: CalendarDisplayEvent) => {
     setEditingEvent(event.resource);
     setSlotRange(null);
     setIsEventModalOpen(true);
   }, []);
 
-  // Dipanggil dari dalam panel ringkasan: tombol "+ Tambah Jadwal di Hari Ini"
   const handleAddEventFromPanel = () => {
     if (!selectedDate) return;
     setEditingEvent(null);
@@ -78,7 +106,6 @@ export default function CalendarPage() {
     setIsEventModalOpen(true);
   };
 
-  // Dipanggil dari dalam panel ringkasan: klik salah satu event untuk edit
   const handleEditEventFromPanel = (eventId: string) => {
     const found = events.find((e) => e.id === eventId);
     if (found) {
@@ -110,10 +137,40 @@ export default function CalendarPage() {
     };
   }, []);
 
+  // Custom render untuk header tiap kotak tanggal di tampilan Bulan:
+  // nomor tanggal + preview pengeluaran (kalau ada) + titik indikator olahraga
+  const CustomDateHeader = useCallback(
+    ({ date: cellDate, label }: { date: Date; label: string }) => {
+      const key = dateKey(cellDate);
+      const totalExpense = expenseByDate[key];
+      const hasExercise = exerciseDateSet.has(key);
+
+      return (
+        <div className="flex flex-col items-end px-1 pt-1 gap-0.5">
+          <div className="flex items-center gap-1">
+            {hasExercise && (
+              <span
+                className="w-1.5 h-1.5 rounded-full bg-orange-400"
+                title="Ada olahraga"
+              />
+            )}
+            <span>{label}</span>
+          </div>
+          {totalExpense && (
+            <span className="text-[10px] font-medium text-red-500 dark:text-red-400 leading-none">
+              -{formatRupiahSingkat(totalExpense)}
+            </span>
+          )}
+        </div>
+      );
+    },
+    [expenseByDate, exerciseDateSet],
+  );
+
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <h1 className="text-xl font-bold text-gray-900 dark:text-white">
           Calendar
         </h1>
         <button
@@ -130,12 +187,13 @@ export default function CalendarPage() {
 
       <p className="text-xs text-gray-400 -mt-2">
         💡 Klik tanggal manapun untuk lihat ringkasan aktivitas hari itu (semua
-        modul)
+        modul). Pengeluaran & olahraga sudah muncul preview langsung di kotak
+        tanggal.
       </p>
 
       <div
         className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4"
-        style={{ height: "600px" }}
+        style={{ height: "650px" }}
       >
         <Calendar
           localizer={localizer}
@@ -150,6 +208,7 @@ export default function CalendarPage() {
           onSelectSlot={handleSelectSlot}
           onSelectEvent={handleSelectEvent}
           eventPropGetter={eventPropGetter}
+          components={{ month: { dateHeader: CustomDateHeader } }}
           culture="id"
           messages={{
             next: "Selanjutnya",
