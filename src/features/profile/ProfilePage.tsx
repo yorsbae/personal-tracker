@@ -22,7 +22,7 @@ const initialForm: ProfileInput = {
   berat_badan: null,
   target_berat_badan: null,
   aktivitas_level: "Sedang",
-  // onboarding_done: null,
+  onboarding_done: false,
 };
 
 export default function ProfilePage() {
@@ -61,7 +61,7 @@ export default function ProfilePage() {
         berat_badan: profile.berat_badan,
         target_berat_badan: profile.target_berat_badan,
         aktivitas_level: profile.aktivitas_level ?? "Sedang",
-        // onboarding_done: profile.onboarding_done,
+        onboarding_done: profile.onboarding_done ?? false,
       });
       setUsernameInput(profile.username ?? "");
     }
