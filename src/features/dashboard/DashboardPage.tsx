@@ -5,6 +5,7 @@ import ExerciseSummaryWidget from "./widgets/ExerciseSummaryWidget";
 import RecentActivityWidget from "./widgets/RecentActivityWidget";
 import QuickStatsWidget from "./widgets/QuickStatsWidget";
 import ReminderBanners from "./reminders/ReminderBanners";
+import ExercisePlanWidget from "./widgets/ExercisePlanWidget";
 import { Link } from "react-router-dom";
 
 function getGreeting() {
@@ -49,6 +50,8 @@ export default function DashboardPage() {
         <TodayScheduleWidget />
         <FinancialSummaryWidget />
       </div>
+
+      <ExercisePlanWidget />
 
       <ExerciseSummaryWidget />
 

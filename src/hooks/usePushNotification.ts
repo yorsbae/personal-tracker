@@ -61,8 +61,18 @@ export function usePushNotification() {
       setIsSubscribed(true);
       return { error: null };
     } catch (err) {
-      const msg =
-        err instanceof Error ? err.message : "Gagal subscribe notifikasi";
+      let msg =
+        err instanceof Error ? err.message : "Gagal aktifkan notifikasi";
+
+      // Terjemahkan error teknis browser jadi pesan yang actionable buat user
+      if (msg.includes("push service not available")) {
+        msg =
+          "Push service tidak tersedia di browser/device ini. Kemungkinan: pakai mode Incognito, HP tanpa Google Play Services, atau jaringan yang memblokir Google. Coba di Chrome normal (bukan incognito) dengan koneksi internet biasa.";
+      } else if (msg.includes("permission")) {
+        msg =
+          "Izin notifikasi ditolak. Cek pengaturan browser/HP kamu untuk mengizinkan notifikasi dari situs ini.";
+      }
+
       setError(msg);
       return { error: msg };
     }

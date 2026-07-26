@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { useActivities } from "./UseActivities";
+import { useActivities } from "./useActivities";
 import {
   KATEGORI_ACTIVITY,
   type Activity,

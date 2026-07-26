@@ -1,4 +1,4 @@
-import { useExercises } from "../../exercise/UseExercises";
+import { useExercises } from "../../exercise/useExercises";
 
 function isThisWeek(tanggal: string) {
   const d = new Date(tanggal);

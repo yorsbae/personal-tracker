@@ -1,24 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
+import { usePrimaryMenu } from "../hooks/usePrimaryMenu";
 
 interface BottomNavProps {
   onOpenMore: () => void;
 }
 
-// Cuma 4 menu paling sering dipakai + "More" untuk sisanya - standar UX bottom nav (maks 5 slot)
-const PRIMARY_ITEMS = [
-  { path: "/", label: "Home", icon: "🏠" },
-  { path: "/money", label: "Money", icon: "💰" },
-  { path: "/calendar", label: "Calendar", icon: "🗓" },
-  { path: "/creative", label: "Creative", icon: "🎬" },
-];
-
 export default function BottomNav({ onOpenMore }: BottomNavProps) {
   const location = useLocation();
+  const { primaryMenu } = usePrimaryMenu();
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-30 pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-center justify-around">
-        {PRIMARY_ITEMS.map((item) => {
+        {primaryMenu.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <Link

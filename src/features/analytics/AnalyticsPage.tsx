@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
-import { useExpenses } from "../expense/UseExpenses";
-import { useExercises } from "../exercise/UseExercises";
-import { useLearnings } from "../learning/UseLearnings";
-import { useCreativeProjects } from "../creative/UseCreativeProjects";
+import { useExpenses } from "../expense/useExpenses";
+import { useExercises } from "../exercise/useExercises";
+import { useLearnings } from "../learning/useLearnings";
+import { useCreativeProjects } from "../creative/useCreativeProjects";
 import AnalyticsChart from "../../components/Analytics/AnalyticsChart";
 import {
   aggregateByPeriod,

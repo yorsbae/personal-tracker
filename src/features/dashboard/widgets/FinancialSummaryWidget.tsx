@@ -1,5 +1,5 @@
-import { useExpenses } from "../../expense/UseExpenses";
-import { useIncomes } from "../../income/UseIncomes";
+import { useExpenses } from "../../expense/useExpenses";
+import { useIncomes } from "../../income/useIncomes";
 
 function formatRupiah(nominal: number) {
   return new Intl.NumberFormat("id-ID", {

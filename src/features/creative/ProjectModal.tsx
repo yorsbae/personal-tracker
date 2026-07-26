@@ -4,7 +4,7 @@ import {
   type CreativeProject,
   type CreativeProjectInput,
 } from "../../types";
-import { useCreativeProjects } from "./UseCreativeProjects";
+import { useCreativeProjects } from "./useCreativeProjects";
 
 interface ProjectModalProps {
   project: CreativeProject;

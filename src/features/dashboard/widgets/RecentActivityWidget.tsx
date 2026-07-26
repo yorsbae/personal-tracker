@@ -1,7 +1,7 @@
-import { useExpenses } from "../../expense/UseExpenses";
-import { useIncomes } from "../../income/UseIncomes";
-import { useExercises } from "../../exercise/UseExercises";
-import { useLearnings } from "../../learning/UseLearnings";
+import { useExpenses } from "../../expense/useExpenses";
+import { useIncomes } from "../../income/useIncomes";
+import { useExercises } from "../../exercise/useExercises";
+import { useLearnings } from "../../learning/useLearnings";
 
 interface FeedItem {
   id: string;

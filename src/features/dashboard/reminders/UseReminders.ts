@@ -1,14 +1,15 @@
 import { useMemo } from "react";
-import { useMoneySummary } from "../../money/UseMoneySummary";
-import { useExercises } from "../../exercise/UseExercises";
-import { useJournals } from "../../journal/UseJournals";
-import { useCreativeProjects } from "../../creative/UseCreativeProjects";
+import { useMoneySummary } from "../../money/useMoneySummary";
+import { useExercises } from "../../exercise/useExercises";
+import { useJournals } from "../../journal/useJournals";
+import { useCreativeProjects } from "../../creative/useCreativeProjects";
 
 export interface Reminder {
   id: string;
   message: string;
   severity: "info" | "warning";
   icon: string;
+  link: string;
 }
 
 function isToday(tanggal: string) {
@@ -41,6 +42,7 @@ export function useReminders(): Reminder[] {
             message: `Budget "${kategori}" sudah TERLAMPAUI (${Math.round(percent)}%)`,
             severity: "warning",
             icon: "💸",
+            link: "/money",
           });
         } else if (percent >= 80) {
           reminders.push({
@@ -48,6 +50,7 @@ export function useReminders(): Reminder[] {
             message: `Budget "${kategori}" sudah ${Math.round(percent)}% terpakai`,
             severity: "warning",
             icon: "💸",
+            link: "/money",
           });
         }
       }
@@ -61,6 +64,7 @@ export function useReminders(): Reminder[] {
         message: "Belum ada catatan olahraga hari ini",
         severity: "info",
         icon: "💪",
+        link: "/exercises",
       });
     }
 
@@ -72,6 +76,7 @@ export function useReminders(): Reminder[] {
         message: "Belum menulis journal hari ini",
         severity: "info",
         icon: "📝",
+        link: "/mind-growth",
       });
     }
 
@@ -96,6 +101,7 @@ export function useReminders(): Reminder[] {
             message: `"${p.judul}" target upload ${diffDays === 0 ? "HARI INI" : `tinggal ${diffDays} hari lagi`}`,
             severity: "warning",
             icon: "🎬",
+            link: "/creative",
           });
         } else if (diffDays < 0) {
           reminders.push({
@@ -103,6 +109,7 @@ export function useReminders(): Reminder[] {
             message: `"${p.judul}" sudah lewat target upload ${Math.abs(diffDays)} hari`,
             severity: "warning",
             icon: "🎬",
+            link: "/creative",
           });
         }
       });

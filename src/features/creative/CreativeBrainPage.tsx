@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { useCreativeProjects } from "./UseCreativeProjects";
+import { useCreativeProjects } from "./useCreativeProjects";
 import ProjectModal from "./ProjectModal";
 import {
   CREATIVE_STAGES,

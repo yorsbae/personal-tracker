@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useExpenses } from "../../features/expense/UseExpenses";
-import { useIncomes } from "../../features/income/UseIncomes";
-import { useExercises } from "../../features/exercise/UseExercises";
-import { useLearnings } from "../../features/learning/UseLearnings";
+import { useExpenses } from "../../features/expense/useExpenses";
+import { useIncomes } from "../../features/income/useIncomes";
+import { useExercises } from "../../features/exercise/useExercises";
+import { useLearnings } from "../../features/learning/useLearnings";
 import { KATEGORI_EXPENSE } from "../../types";
 import CurrencyInput from "../ui/CurrencyInput";
 

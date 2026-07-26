@@ -1,4 +1,5 @@
-import { useEvents } from "../../calendar/UseEvents";
+import { Link } from "react-router-dom";
+import { useEvents } from "../../calendar/useEvents";
 import { EVENT_TIPE_LABEL, EVENT_TIPE_COLOR } from "../../../types";
 
 function isToday(dateStr: string) {
@@ -31,9 +32,17 @@ export default function TodayScheduleWidget() {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
-      <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-        Jadwal Hari Ini
-      </h3>
+      <Link
+        to="/calendar"
+        className="flex items-center justify-between mb-4 group"
+      >
+        <h3 className="font-semibold text-gray-900 dark:text-white">
+          Jadwal Hari Ini
+        </h3>
+        <span className="text-xs text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
+          Lihat kalender →
+        </span>
+      </Link>
 
       {loading ? (
         <p className="text-gray-400 text-sm">Memuat...</p>

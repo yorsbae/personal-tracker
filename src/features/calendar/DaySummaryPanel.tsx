@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import { useExpenses } from "../expense/UseExpenses";
-import { useIncomes } from "../income/UseIncomes";
-import { useExercises } from "../exercise/UseExercises";
-import { useLearnings } from "../learning/UseLearnings";
-import { useJournals } from "../journal/UseJournals";
-import { useNotes } from "../notes/UseNotes";
-import { useEvents } from "./UseEvents";
+import { useExpenses } from "../expense/useExpenses";
+import { useIncomes } from "../income/useIncomes";
+import { useExercises } from "../exercise/useExercises";
+import { useLearnings } from "../learning/useLearnings";
+import { useJournals } from "../journal/useJournals";
+import { useNotes } from "../notes/useNotes";
+import { useEvents } from "./useEvents";
 import { EVENT_TIPE_LABEL, EVENT_TIPE_COLOR } from "../../types";
 
 interface DaySummaryPanelProps {

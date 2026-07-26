@@ -16,11 +16,13 @@ interface EventModalProps {
   defaultEnd?: Date;
 }
 
-// Helper: ubah Date jadi format string yang cocok untuk <input type="datetime-local">
 function toLocalInputValue(date: Date) {
   const offset = date.getTimezoneOffset() * 60000;
   return new Date(date.getTime() - offset).toISOString().slice(0, 16);
 }
+
+const inputClass =
+  "w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500";
 
 export default function EventModal({
   isOpen,
@@ -39,7 +41,6 @@ export default function EventModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  // Setiap kali modal dibuka, isi form sesuai mode (edit atau tambah baru dari slot yang diklik)
   useEffect(() => {
     if (editingEvent) {
       setJudul(editingEvent.judul);
@@ -87,16 +88,15 @@ export default function EventModal({
   };
 
   return (
-    // Overlay gelap di belakang modal, klik di luar modal akan menutup modal
     <div
       className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl p-5 w-full max-w-md space-y-4"
-        onClick={(e) => e.stopPropagation()} // supaya klik di dalam modal tidak ikut menutup modal
+        className="bg-white dark:bg-gray-800 rounded-xl p-5 w-full max-w-md space-y-4"
+        onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-semibold text-gray-900">
+        <h2 className="font-semibold text-gray-900 dark:text-white">
           {editingEvent ? "Edit Jadwal" : "Tambah Jadwal"}
         </h2>
 
@@ -108,7 +108,7 @@ export default function EventModal({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Judul
             </label>
             <input
@@ -116,19 +116,19 @@ export default function EventModal({
               required
               value={judul}
               onChange={(e) => setJudul(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className={inputClass}
               placeholder="Misal: Meeting tim, Long run 10K..."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Tipe
             </label>
             <select
               value={tipe}
               onChange={(e) => setTipe(e.target.value as EventTipe)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className={inputClass}
             >
               {Object.entries(EVENT_TIPE_LABEL).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -140,7 +140,7 @@ export default function EventModal({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Mulai
               </label>
               <input
@@ -148,31 +148,31 @@ export default function EventModal({
                 required
                 value={mulai}
                 onChange={(e) => setMulai(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className={inputClass}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Selesai (opsional)
               </label>
               <input
                 type="datetime-local"
                 value={selesai}
                 onChange={(e) => setSelesai(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className={inputClass}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Catatan
             </label>
             <textarea
               value={catatan}
               onChange={(e) => setCatatan(e.target.value)}
               rows={2}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900"
+              className={inputClass}
             />
           </div>
 
@@ -180,7 +180,7 @@ export default function EventModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 bg-gray-900 text-white py-2.5 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50 transition"
+              className="flex-1 bg-gray-900 dark:bg-white dark:text-gray-900 text-white py-2.5 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 transition"
             >
               {isSubmitting
                 ? "Menyimpan..."
@@ -192,7 +192,7 @@ export default function EventModal({
               <button
                 type="button"
                 onClick={onDelete}
-                className="px-4 py-2.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition"
+                className="px-4 py-2.5 rounded-lg border border-red-200 dark:border-red-900 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition"
               >
                 Hapus
               </button>
@@ -200,7 +200,7 @@ export default function EventModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition"
+              className="px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
             >
               Batal
             </button>

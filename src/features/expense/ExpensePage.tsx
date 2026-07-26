@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useExpenses } from "./UseExpenses";
+import { useExpenses } from "./useExpenses";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseList from "./ExpenseList";
 import type { Expense, ExpenseInput } from "../../types";

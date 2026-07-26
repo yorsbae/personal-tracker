@@ -4,10 +4,11 @@ import { format, parse, startOfWeek, getDay } from "date-fns";
 import { id } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import { useEvents } from "./UseEvents";
-import { useExpenses } from "../expense/UseExpenses";
-import { useIncomes } from "../income/UseIncomes";
-import { useExercises } from "../exercise/UseExercises";
+import { useEvents } from "./useEvents";
+import { useExpenses } from "../expense/useExpenses";
+import { useIncomes } from "../income/useIncomes";
+import { useExercises } from "../exercise/useExercises";
+import { useExerciseSchedule } from "../exercise/useExerciseSchedule";
 import EventModal from "./EventModal";
 import DaySummaryPanel from "./DaySummaryPanel";
 import {
@@ -56,6 +57,7 @@ export default function CalendarPage() {
   const { expenses } = useExpenses();
   const { incomes } = useIncomes();
   const { exercises } = useExercises();
+  const { getScheduleForDate } = useExerciseSchedule();
 
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
@@ -159,6 +161,12 @@ export default function CalendarPage() {
   const CustomDateHeader = useCallback(
     ({ date: cellDate, label }: { date: Date; label: string }) => {
       const ind = indicatorByDate[dateKey(cellDate)];
+      const plan = getScheduleForDate(cellDate);
+      const showPlan =
+        plan &&
+        plan.tipe !== "Rest" &&
+        !ind?.runningKm &&
+        !ind?.otherExerciseCount; // jangan tampil kalau sudah ada log asli hari itu
 
       return (
         <div className="flex flex-col items-end px-1 pt-1 gap-0.5 text-[10px] leading-tight">
@@ -183,10 +191,15 @@ export default function CalendarPage() {
               💪{ind.otherExerciseCount}x
             </span>
           )}
+          {showPlan && (
+            <span className="text-gray-400 dark:text-gray-500 italic">
+              rencana: {plan.tipe}
+            </span>
+          )}
         </div>
       );
     },
-    [indicatorByDate],
+    [indicatorByDate, getScheduleForDate],
   );
 
   return (
@@ -222,6 +235,8 @@ export default function CalendarPage() {
           startAccessor="start"
           endAccessor="end"
           selectable
+          longPressThreshold={1}
+          views={["month", "week", "day", "agenda"]}
           view={view}
           date={date}
           onView={setView}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useProfile, type ProfileInput } from "./UseProfile";
+import { useProfile, type ProfileInput } from "./useProfile";
 import { usePinSettings } from "../../hooks/usePinSettings";
 import {
   calculateBMI,
@@ -11,6 +11,7 @@ import {
 import { exportAllData } from "../../utils/exportData";
 import { supabase } from "../../lib/supabase";
 import NotificationSettings from "./NotificationSettings";
+import CustomizeMenuSettings from "../../components/CustomizeMenuSettings";
 
 const initialForm: ProfileInput = {
   username: null,
@@ -448,6 +449,8 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+
+      <CustomizeMenuSettings />
 
       <NotificationSettings />
 

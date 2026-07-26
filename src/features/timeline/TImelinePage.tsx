@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
-import { useExpenses } from "../expense/UseExpenses";
-import { useIncomes } from "../income/UseIncomes";
-import { useActivities } from "../activity/UseActivities";
-import { useExercises } from "../exercise/UseExercises";
-import { useLearnings } from "../learning/UseLearnings";
-import { useEvents } from "../calendar/UseEvents";
+import { useExpenses } from "../expense/useExpenses";
+import { useIncomes } from "../income/useIncomes";
+import { useActivities } from "../activity/useActivities";
+import { useExercises } from "../exercise/useExercises";
+import { useLearnings } from "../learning/useLearnings";
+import { useEvents } from "../calendar/useEvents";
 import { EVENT_TIPE_LABEL } from "../../types";
 
 type FeedType =

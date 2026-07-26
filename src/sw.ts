@@ -3,8 +3,11 @@ declare let self: ServiceWorkerGlobalScope;
 
 import { precacheAndRoute } from "workbox-precaching";
 
-// Precache semua aset build (dari injectManifest) - ini yang bikin app tetap kebuka offline
-precacheAndRoute(self.__WB_MANIFEST);
+// Precache semua aset build (dari injectManifest) - ini yang bikin app tetap kebuka offline.
+// Fallback ke [] kalau self.__WB_MANIFEST belum ke-inject (misal saat testing di `npm run dev`,
+// manifest cuma ke-generate saat `npm run build`) - tanpa ini akan error
+// "Cannot read properties of undefined (reading 'length')".
+precacheAndRoute(self.__WB_MANIFEST || []);
 
 // Terima push dari server (Supabase Edge Function), tampilkan sebagai notifikasi asli HP
 self.addEventListener("push", (event) => {

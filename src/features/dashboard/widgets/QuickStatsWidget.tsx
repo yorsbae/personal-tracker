@@ -1,6 +1,6 @@
-import { useActivities } from "../../activity/UseActivities";
-import { useExercises } from "../../exercise/UseExercises";
-import { useLearnings } from "../../learning/UseLearnings";
+import { useActivities } from "../../activity/useActivities";
+import { useExercises } from "../../exercise/useExercises";
+import { useLearnings } from "../../learning/useLearnings";
 
 function isThisWeek(tanggal: string) {
   const d = new Date(tanggal);

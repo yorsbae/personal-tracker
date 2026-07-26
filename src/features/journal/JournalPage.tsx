@@ -1,5 +1,5 @@
 import { useState, useMemo, type FormEvent } from "react";
-import { useJournals } from "./UseJournals";
+import { useJournals } from "./useJournals";
 import { MOOD_OPTIONS, type Journal, type JournalInput } from "../../types";
 
 const initialForm: JournalInput = {

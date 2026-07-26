@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { useLearnings } from "./UseLearnings";
+import { useLearnings } from "./useLearnings";
 import type { Learning, LearningInput } from "../../types";
 
 const initialForm: LearningInput = {

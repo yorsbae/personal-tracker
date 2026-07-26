@@ -1,5 +1,5 @@
 import { useState, useMemo, type FormEvent } from "react";
-import { useNotes } from "./UseNotes";
+import { useNotes } from "./useNotes";
 import { NOTE_KATEGORI_DEFAULT, type Note, type NoteInput } from "../../types";
 
 const CUSTOM_VALUE = "__custom__";

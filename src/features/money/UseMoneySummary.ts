@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { useExpenses } from "../expense/UseExpenses";
-import { useIncomes } from "../income/UseIncomes";
-import { useBudgetTarget } from "./UseBudgetTarget";
+import { useExpenses } from "../expense/useExpenses";
+import { useIncomes } from "../income/useIncomes";
+import { useBudgetTarget } from "./useBudgetTarget";
 
 function isInMonth(tanggal: string, monthDate: Date) {
   const d = new Date(tanggal);

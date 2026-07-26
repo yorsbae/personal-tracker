@@ -96,6 +96,9 @@ export const EXERCISE_TIPE_PRESETS = [
   "Yoga",
 ] as const;
 
+// Cuma tipe ini yang butuh field "jarak" - Badminton/Yoga/Strength/dst tidak relevan
+export const DISTANCE_BASED_TYPES = ["Running", "Swimming", "Cycling"] as const;
+
 export const SUB_KATEGORI_RUNNING = [
   "Easy Run",
   "Recovery Run",

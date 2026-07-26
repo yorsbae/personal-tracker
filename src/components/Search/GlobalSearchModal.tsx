@@ -1,12 +1,12 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useNotes } from "../../features/notes/UseNotes";
-import { useJournals } from "../../features/journal/UseJournals";
-import { useLearnings } from "../../features/learning/UseLearnings";
-import { useExpenses } from "../../features/expense/UseExpenses";
-import { useIncomes } from "../../features/income/UseIncomes";
-import { useExercises } from "../../features/exercise/UseExercises";
-import { useCreativeProjects } from "../../features/creative/UseCreativeProjects";
+import { useNotes } from "../../features/notes/useNotes";
+import { useJournals } from "../../features/journal/useJournals";
+import { useLearnings } from "../../features/learning/useLearnings";
+import { useExpenses } from "../../features/expense/useExpenses";
+import { useIncomes } from "../../features/income/useIncomes";
+import { useExercises } from "../../features/exercise/useExercises";
+import { useCreativeProjects } from "../../features/creative/useCreativeProjects";
 
 interface SearchResult {
   id: string;

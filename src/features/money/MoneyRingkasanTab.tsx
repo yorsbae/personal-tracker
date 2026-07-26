@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMoneySummary } from "./UseMoneySummary";
+import { useMoneySummary } from "./useMoneySummary";
 import CurrencyInput from "../../components/ui/CurrencyInput";
 import CategoryPieChart from "../../components/Analytics/CategoryPieChart";
 

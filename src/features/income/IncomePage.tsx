@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useIncomes } from "./UseIncomes";
+import { useIncomes } from "./useIncomes";
 import IncomeForm from "./IncomeForm";
 import IncomeList from "./IncomeList";
 import type { Income, IncomeInput } from "../../types";

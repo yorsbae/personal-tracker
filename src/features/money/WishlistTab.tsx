@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { useWishlists } from "./UseWishlists";
+import { useWishlists } from "./useWishlists";
 import {
   WISHLIST_KATEGORI,
   WISHLIST_STATUS,

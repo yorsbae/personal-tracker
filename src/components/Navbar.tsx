@@ -75,18 +75,27 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ===== MOBILE: header ringkas di atas (cuma judul + search) ===== */}
+      {/* ===== MOBILE: header ringkas di atas (judul + dark mode + search) ===== */}
       <div className="md:hidden flex items-center justify-between bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 sticky top-0 z-20">
         <span className="font-semibold text-gray-900 dark:text-white">
           Life OS
         </span>
-        <button
-          onClick={() => setIsSearchOpen(true)}
-          className="text-lg"
-          aria-label="Search"
-        >
-          🔍
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            className="text-lg"
+            aria-label="Toggle dark mode"
+          >
+            {theme === "light" ? "🌙" : "☀️"}
+          </button>
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="text-lg"
+            aria-label="Search"
+          >
+            🔍
+          </button>
+        </div>
       </div>
 
       {/* ===== MOBILE: bottom tab bar ===== */}
