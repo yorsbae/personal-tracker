@@ -10,6 +10,7 @@ import {
 } from "../../utils/bodyCalculations";
 import { exportAllData } from "../../utils/exportData";
 import { supabase } from "../../lib/supabase";
+import NotificationSettings from "./NotificationSettings";
 
 const initialForm: ProfileInput = {
   username: null,
@@ -447,6 +448,8 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+
+      <NotificationSettings />
 
       {/* Export Data */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 space-y-2">

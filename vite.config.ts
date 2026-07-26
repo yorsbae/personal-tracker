@@ -8,9 +8,11 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: "autoUpdate", // auto update service worker tiap ada versi baru di-deploy
-      // Precache semua file hasil build (HTML/CSS/JS) supaya app shell tetap kebuka offline
-      workbox: {
+      registerType: "autoUpdate",
+      strategies: "injectManifest", // ganti dari 'generateSW' default supaya bisa nulis custom push handler
+      srcDir: "src",
+      filename: "sw.ts",
+      injectManifest: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
       },
       manifest: {
@@ -22,7 +24,6 @@ export default defineConfig({
         display: "standalone",
         start_url: "/",
         icons: [
-          // Placeholder - nanti diganti icon asli di STEP 14
           { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
           { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
         ],

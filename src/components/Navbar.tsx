@@ -13,6 +13,7 @@ const menuItems = [
   { path: "/mind-growth", label: "Mind & Growth" },
   { path: "/creative", label: "Creative Brain" },
   { path: "/notes", label: "Notes" },
+  { path: "/projects", label: "Projects" },
   { path: "/calendar", label: "Calendar" },
   { path: "/analytics", label: "Analytics" },
   { path: "/profile", label: "Profile" },

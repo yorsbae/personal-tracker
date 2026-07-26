@@ -5,6 +5,7 @@ import ExerciseSummaryWidget from "./widgets/ExerciseSummaryWidget";
 import RecentActivityWidget from "./widgets/RecentActivityWidget";
 import QuickStatsWidget from "./widgets/QuickStatsWidget";
 import ReminderBanners from "./reminders/ReminderBanners";
+import { Link } from "react-router-dom";
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -32,6 +33,13 @@ export default function DashboardPage() {
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400">{today}</p>
       </div>
+
+      <Link
+        to="/focus"
+        className="block w-full text-center bg-gray-900 dark:bg-white dark:text-gray-900 text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
+      >
+        🎯 Mulai Sesi Fokus
+      </Link>
 
       <ReminderBanners />
 

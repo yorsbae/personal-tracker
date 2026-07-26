@@ -11,6 +11,7 @@ const MORE_ITEMS = [
   { path: "/exercises", label: "Body", icon: "💪" },
   { path: "/mind-growth", label: "Mind & Growth", icon: "🧠" },
   { path: "/notes", label: "Notes", icon: "📝" },
+  { path: "/projects", label: "Project Tracker", icon: "🛠️" },
   { path: "/analytics", label: "Analytics", icon: "📊" },
   { path: "/profile", label: "Profile", icon: "👤" },
 ];

@@ -1,8 +1,17 @@
 import { useState } from "react";
 import LearningPage from "../learning/LearningPage";
 import JournalPage from "../journal/JournalPage";
+import ReadingTab from "../reading/ReadingTab";
+import WeeklyReviewTab from "../weeklyreview/WeeklyReviewTab";
 
-type Tab = "learning" | "journal";
+type Tab = "learning" | "journal" | "reading" | "review";
+
+const TABS: { key: Tab; label: string }[] = [
+  { key: "learning", label: "Learning" },
+  { key: "reading", label: "Reading" },
+  { key: "journal", label: "Journal" },
+  { key: "review", label: "Weekly Review" },
+];
 
 export default function MindGrowthPage() {
   const [tab, setTab] = useState<Tab>("learning");
@@ -13,37 +22,30 @@ export default function MindGrowthPage() {
         Mind & Growth
       </h1>
 
-      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700">
-        <button
-          onClick={() => setTab("learning")}
-          className={`px-3 py-2 text-sm font-medium border-b-2 transition ${
-            tab === "learning"
-              ? "border-gray-900 dark:border-white text-gray-900 dark:text-white"
-              : "border-transparent text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-          }`}
-        >
-          Learning
-        </button>
-        <button
-          onClick={() => setTab("journal")}
-          className={`px-3 py-2 text-sm font-medium border-b-2 transition ${
-            tab === "journal"
-              ? "border-gray-900 dark:border-white text-gray-900 dark:text-white"
-              : "border-transparent text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-          }`}
-        >
-          Journal
-        </button>
+      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`px-3 py-2 text-sm font-medium border-b-2 transition whitespace-nowrap ${
+              tab === t.key
+                ? "border-gray-900 dark:border-white text-gray-900 dark:text-white"
+                : "border-transparent text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
 
-      {/* LearningPage & JournalPage sudah punya wrapper max-w-2xl mx-auto p-4 sendiri (khusus Learning),
-          jadi dibungkus ulang tanpa padding ganda */}
       {tab === "learning" && (
         <div className="-mx-4 -mt-2">
           <LearningPage />
         </div>
       )}
       {tab === "journal" && <JournalPage />}
+      {tab === "reading" && <ReadingTab />}
+      {tab === "review" && <WeeklyReviewTab />}
     </div>
   );
 }
