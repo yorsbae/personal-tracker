@@ -23,15 +23,15 @@ import DevProjectsPage from "./features/devprojects/DevProjectsPage";
 import FocusModePage from "./features/focus/FocusModePage";
 
 // Placeholder sementara - akan diganti komponen asli di step berikutnya
-function ComingSoon({ nama }: { nama: string }) {
-  return (
-    <div className="p-8 text-center">
-      <p className="text-gray-400 dark:text-gray-500">
-        {nama} — akan dibangun di step berikutnya
-      </p>
-    </div>
-  );
-}
+// function ComingSoon({ nama }: { nama: string }) {
+//   return (
+//     <div className="p-8 text-center">
+//       <p className="text-gray-400 dark:text-gray-500">
+//         {nama} — akan dibangun di step berikutnya
+//       </p>
+//     </div>
+//   );
+// }
 
 function withLayout(element: ReactNode) {
   return (
