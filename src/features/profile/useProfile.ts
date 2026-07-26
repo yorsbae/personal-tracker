@@ -12,6 +12,7 @@ export interface Profile {
   berat_badan: number | null; // kg
   target_berat_badan: number | null;
   aktivitas_level: string | null;
+  onboarding_done: boolean | null;
 }
 
 export type ProfileInput = Omit<Profile, "id">;
@@ -27,7 +28,7 @@ export function useProfile() {
     const { data, error } = await supabase
       .from("profiles")
       .select(
-        "id, nama, username, umur, jenis_kelamin, tinggi_badan, berat_badan, target_berat_badan, aktivitas_level",
+        "id, nama, username, umur, jenis_kelamin, tinggi_badan, berat_badan, target_berat_badan, aktivitas_level, onboarding_done",
       )
       .eq("id", user.id)
       .maybeSingle();

@@ -1,4 +1,5 @@
 import { useAuth } from "../../context/AuthContext";
+import { useProfile } from "../profile/useProfile";
 import TodayScheduleWidget from "./widgets/TodayScheduleWidget";
 import FinancialSummaryWidget from "./widgets/FinancialSummaryWidget";
 import ExerciseSummaryWidget from "./widgets/ExerciseSummaryWidget";
@@ -6,6 +7,8 @@ import RecentActivityWidget from "./widgets/RecentActivityWidget";
 import QuickStatsWidget from "./widgets/QuickStatsWidget";
 import ReminderBanners from "./reminders/ReminderBanners";
 import ExercisePlanWidget from "./widgets/ExercisePlanWidget";
+import WeatherBadge from "./widgets/WeatherBadge";
+import DailyQuote from "./widgets/DailyQuote";
 import { Link } from "react-router-dom";
 
 function getGreeting() {
@@ -18,6 +21,8 @@ function getGreeting() {
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const { profile } = useProfile();
+  const displayName = profile?.nama || user?.email?.split("@")[0] || "";
   const today = new Date().toLocaleDateString("id-ID", {
     weekday: "long",
     day: "numeric",
@@ -30,9 +35,13 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
           {getGreeting()}
-          {user?.email ? `, ${user.email.split("@")[0]}` : ""}
+          {displayName ? `, ${displayName}` : ""}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">{today}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+          <span>{today}</span>
+          <span className="text-gray-300 dark:text-gray-600">·</span>
+          <WeatherBadge />
+        </p>
       </div>
 
       <Link
@@ -41,6 +50,8 @@ export default function DashboardPage() {
       >
         🎯 Mulai Sesi Fokus
       </Link>
+
+      <DailyQuote />
 
       <ReminderBanners />
 

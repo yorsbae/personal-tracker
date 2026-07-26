@@ -33,6 +33,15 @@ export function usePushNotification() {
     if (!user) return { error: "Belum login" };
     setError("");
 
+    // Ini akar masalah error "Cannot read properties of undefined (reading 'length')" -
+    // terjadi kalau VITE_VAPID_PUBLIC_KEY belum diisi di file .env
+    if (!VAPID_PUBLIC_KEY) {
+      const msg =
+        'VITE_VAPID_PUBLIC_KEY belum diset di file .env. Generate dulu lewat "web-push generate-vapid-keys", lalu tambahkan ke .env dan restart dev server.';
+      setError(msg);
+      return { error: msg };
+    }
+
     try {
       const permission = await Notification.requestPermission();
       if (permission !== "granted") return { error: "Izin notifikasi ditolak" };

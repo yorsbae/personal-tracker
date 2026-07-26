@@ -101,12 +101,7 @@ export default function Navbar() {
       {/* ===== MOBILE: bottom tab bar ===== */}
       <BottomNav onOpenMore={() => setIsMoreOpen(true)} />
 
-      {isMoreOpen && (
-        <MoreSheet
-          onClose={() => setIsMoreOpen(false)}
-          onOpenSearch={() => setIsSearchOpen(true)}
-        />
-      )}
+      {isMoreOpen && <MoreSheet onClose={() => setIsMoreOpen(false)} />}
       {isSearchOpen && (
         <GlobalSearchModal onClose={() => setIsSearchOpen(false)} />
       )}

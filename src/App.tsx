@@ -1,5 +1,12 @@
+import { useEffect } from "react";
 import type { ReactNode } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { PinLockProvider, usePinLock } from "./context/PinLockContext";
@@ -21,16 +28,18 @@ import AnalyticsPage from "./features/analytics/AnalyticsPage";
 import ProfilePage from "./features/profile/ProfilePage";
 import DevProjectsPage from "./features/devprojects/DevProjectsPage";
 import FocusModePage from "./features/focus/FocusModePage";
+import GoalsPage from "./features/goals/GoalsPage";
+import AchievementsPage from "./features/achievements/AchievementsPage";
+import OnboardingPage from "./features/onboarding/OnboardingPage";
+import { useProfile } from "./features/profile/useProfile";
 
 // Placeholder sementara - akan diganti komponen asli di step berikutnya
 // function ComingSoon({ nama }: { nama: string }) {
 //   return (
 //     <div className="p-8 text-center">
-//       <p className="text-gray-400 dark:text-gray-500">
-//         {nama} — akan dibangun di step berikutnya
-//       </p>
+//       <p className="text-gray-400 dark:text-gray-500">{nama} — akan dibangun di step berikutnya</p>
 //     </div>
-//   );
+//   )
 // }
 
 function withLayout(element: ReactNode) {
@@ -43,15 +52,42 @@ function withLayout(element: ReactNode) {
 
 // Komponen ini nge-cek status lock, ditaruh DI DALAM AuthProvider+PinLockProvider
 // supaya bisa akses context-nya, lalu tampilkan LockScreen di atas semua halaman kalau terkunci
+// Cek status onboarding, arahkan ke /onboarding kalau belum selesai (kecuali sedang di halaman itu sendiri)
+function OnboardingGate() {
+  const { profile, loading } = useProfile();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading) return;
+    const publicPaths = ["/login", "/register", "/onboarding"];
+    if (publicPaths.includes(location.pathname)) return;
+    if (profile && profile.onboarding_done === false) {
+      navigate("/onboarding");
+    }
+  }, [profile, loading, location.pathname]);
+
+  return null;
+}
+
 function AppContent() {
   const { isLocked } = usePinLock();
 
   return (
     <BrowserRouter>
       {isLocked && <LockScreen />}
+      <OnboardingGate />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/onboarding"
+          element={
+            <ProtectedRoute>
+              <OnboardingPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/" element={withLayout(<DashboardPage />)} />
 
@@ -70,6 +106,11 @@ function AppContent() {
         <Route path="/analytics" element={withLayout(<AnalyticsPage />)} />
         <Route path="/profile" element={withLayout(<ProfilePage />)} />
         <Route path="/projects" element={withLayout(<DevProjectsPage />)} />
+        <Route path="/goals" element={withLayout(<GoalsPage />)} />
+        <Route
+          path="/achievements"
+          element={withLayout(<AchievementsPage />)}
+        />
         <Route
           path="/focus"
           element={

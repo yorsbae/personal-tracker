@@ -46,7 +46,7 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Email atau Username
+              Username
             </label>
             <input
               type="text"
@@ -54,7 +54,7 @@ export default function Login() {
               onChange={(e) => setIdentifier(e.target.value)}
               required
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500"
-              placeholder="nama@email.com atau username"
+              placeholder="username"
             />
           </div>
 

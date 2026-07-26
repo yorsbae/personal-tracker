@@ -236,7 +236,7 @@ export default function CalendarPage() {
           endAccessor="end"
           selectable
           longPressThreshold={1}
-          views={["month", "week", "day", "agenda"]}
+          views={["month"]}
           view={view}
           date={date}
           onView={setView}

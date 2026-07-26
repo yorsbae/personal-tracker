@@ -7,6 +7,8 @@ import { useExpenses } from "../../features/expense/useExpenses";
 import { useIncomes } from "../../features/income/useIncomes";
 import { useExercises } from "../../features/exercise/useExercises";
 import { useCreativeProjects } from "../../features/creative/useCreativeProjects";
+import { useReadings } from "../../features/reading/useReadings";
+import { useDevProjects } from "../../features/devprojects/useDevProjects";
 
 interface SearchResult {
   id: string;
@@ -30,6 +32,8 @@ export default function GlobalSearchModal({ onClose }: GlobalSearchModalProps) {
   const { incomes } = useIncomes();
   const { exercises } = useExercises();
   const { projects } = useCreativeProjects();
+  const { readings } = useReadings();
+  const { projects: devProjects } = useDevProjects();
 
   const results: SearchResult[] = useMemo(() => {
     if (query.trim().length < 2) return [];
@@ -40,83 +44,88 @@ export default function GlobalSearchModal({ onClose }: GlobalSearchModalProps) {
     const out: SearchResult[] = [];
 
     notes.forEach((n) => {
-      if (matches(n.judul, n.konten, ...(n.tags ?? []))) {
+      if (matches(n.judul, n.konten, ...(n.tags ?? [])))
         out.push({
           id: `note-${n.id}`,
           label: "Notes",
           detail: n.judul,
           path: "/notes",
         });
-      }
     });
-
     journals.forEach((j) => {
-      if (matches(j.konten, j.mood)) {
+      if (matches(j.konten, j.mood))
         out.push({
           id: `journal-${j.id}`,
           label: "Journal",
           detail: j.konten.slice(0, 60),
           path: "/mind-growth",
         });
-      }
     });
-
     learnings.forEach((l) => {
-      if (matches(l.topik, l.materi, l.catatan)) {
+      if (matches(l.topik, l.materi, l.catatan))
         out.push({
           id: `learn-${l.id}`,
           label: "Learning",
           detail: l.topik,
           path: "/mind-growth",
         });
-      }
     });
-
     expenses.forEach((e) => {
-      if (matches(e.kategori, e.catatan, e.metode_pembayaran)) {
+      if (matches(e.kategori, e.catatan, e.metode_pembayaran))
         out.push({
           id: `exp-${e.id}`,
           label: "Pengeluaran",
           detail: `${e.kategori} - Rp${e.nominal.toLocaleString("id-ID")}`,
           path: "/money",
         });
-      }
     });
-
     incomes.forEach((i) => {
-      if (matches(i.sumber, i.catatan, i.kategori)) {
+      if (matches(i.sumber, i.catatan, i.kategori))
         out.push({
           id: `inc-${i.id}`,
           label: "Pemasukan",
           detail: i.sumber,
           path: "/money",
         });
-      }
     });
-
     exercises.forEach((ex) => {
-      if (matches(ex.tipe, ex.sub_kategori, ex.catatan)) {
+      if (matches(ex.tipe, ex.sub_kategori, ex.catatan))
         out.push({
           id: `ex-${ex.id}`,
           label: "Latihan",
           detail: `${ex.tipe} - ${ex.sub_kategori}`,
           path: "/exercises",
         });
-      }
     });
-
     projects.forEach((p) => {
-      if (matches(p.judul, p.kategori, p.catatan_ide, p.catatan_analisa)) {
+      if (matches(p.judul, p.kategori, p.catatan_ide, p.catatan_analisa))
         out.push({
           id: `proj-${p.id}`,
           label: "Creative Brain",
           detail: p.judul,
           path: "/creative",
         });
-      }
+    });
+    readings.forEach((r) => {
+      if (matches(r.judul_buku, r.penulis, r.insight))
+        out.push({
+          id: `read-${r.id}`,
+          label: "Reading",
+          detail: r.judul_buku,
+          path: "/mind-growth",
+        });
+    });
+    devProjects.forEach((p) => {
+      if (matches(p.nama, p.riset_kebutuhan))
+        out.push({
+          id: `dev-${p.id}`,
+          label: "Project Tracker",
+          detail: p.nama,
+          path: "/projects",
+        });
     });
 
-    return out.slice(0, 20); // batasi biar tidak kepanjangan
+    return out.slice(0, 20);
   }, [
     query,
     notes,
@@ -126,6 +135,8 @@ export default function GlobalSearchModal({ onClose }: GlobalSearchModalProps) {
     incomes,
     exercises,
     projects,
+    readings,
+    devProjects,
   ]);
 
   const handleClickResult = (path: string) => {

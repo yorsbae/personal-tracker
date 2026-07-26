@@ -1,5 +1,25 @@
-import { useState, type FormEvent } from "react";
+import { useState, useMemo, type FormEvent } from "react";
 import { useReadings, type Reading, type ReadingInput } from "./useReadings";
+
+// Sama persis logic-nya dengan streak Journal - dipakai berulang
+function calculateStreak(dates: string[]): number {
+  if (dates.length === 0) return 0;
+  const uniqueDates = Array.from(new Set(dates)).sort().reverse();
+  const today = new Date().toISOString().split("T")[0];
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+  if (uniqueDates[0] !== today && uniqueDates[0] !== yesterday) return 0;
+  let streak = 1;
+  for (let i = 0; i < uniqueDates.length - 1; i++) {
+    const diffDays = Math.round(
+      (new Date(uniqueDates[i]).getTime() -
+        new Date(uniqueDates[i + 1]).getTime()) /
+        86400000,
+    );
+    if (diffDays === 1) streak++;
+    else break;
+  }
+  return streak;
+}
 
 const initialForm: ReadingInput = {
   judul_buku: "",
@@ -17,6 +37,10 @@ const inputClass =
 export default function ReadingTab() {
   const { readings, loading, addReading, updateReading, deleteReading } =
     useReadings();
+  const streak = useMemo(
+    () => calculateStreak(readings.map((r) => r.tanggal)),
+    [readings],
+  );
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Reading | null>(null);
   const [form, setForm] = useState<ReadingInput>(initialForm);
@@ -57,19 +81,29 @@ export default function ReadingTab() {
 
   // Update cepat halaman sekarang langsung dari list, tanpa buka form penuh
   const handleQuickUpdatePage = async (r: Reading, newPage: number) => {
-    await updateReading(r.id, { halaman_sekarang: newPage });
+    await updateReading(r.id, {
+      halaman_sekarang: newPage,
+      tanggal: new Date().toISOString().split("T")[0],
+    });
   };
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="font-semibold text-gray-900 dark:text-white">Reading</h2>
-        <button
-          onClick={() => setShowForm(true)}
-          className="text-sm bg-gray-900 dark:bg-white dark:text-gray-900 text-white px-3 py-1.5 rounded-lg"
-        >
-          + Buku Baru
-        </button>
+        <div className="flex items-center gap-2">
+          {streak > 0 && (
+            <span className="text-xs px-2 py-1 bg-orange-50 dark:bg-orange-950 text-orange-600 dark:text-orange-300 rounded-full">
+              🔥 {streak} hari
+            </span>
+          )}
+          <button
+            onClick={() => setShowForm(true)}
+            className="text-sm bg-gray-900 dark:bg-white dark:text-gray-900 text-white px-3 py-1.5 rounded-lg"
+          >
+            + Buku Baru
+          </button>
+        </div>
       </div>
 
       {showForm && (

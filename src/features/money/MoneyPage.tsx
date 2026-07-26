@@ -3,13 +3,15 @@ import MoneyRingkasanTab from "./MoneyRingkasanTab";
 import WishlistTab from "./WishlistTab";
 import ExpensePage from "../expense/ExpensePage";
 import IncomePage from "../income/IncomePage";
+import RecurringExpenseTab from "./RecurringExpenseTab";
 
-type Tab = "ringkasan" | "expense" | "income" | "wishlist";
+type Tab = "ringkasan" | "expense" | "income" | "wishlist" | "recurring";
 
 const TABS: { key: Tab; label: string }[] = [
   { key: "ringkasan", label: "Ringkasan" },
   { key: "expense", label: "Pengeluaran" },
   { key: "income", label: "Pemasukan" },
+  { key: "recurring", label: "Recurring" },
   { key: "wishlist", label: "Wishlist" },
 ];
 
@@ -40,6 +42,7 @@ export default function MoneyPage() {
 
       {tab === "ringkasan" && <MoneyRingkasanTab />}
       {tab === "wishlist" && <WishlistTab />}
+      {tab === "recurring" && <RecurringExpenseTab />}
       {/* ExpensePage & IncomePage sudah punya <div className="max-w-2xl mx-auto p-4"> sendiri,
           jadi di sini kita bungkus ulang tanpa padding ganda */}
       {tab === "expense" && (
