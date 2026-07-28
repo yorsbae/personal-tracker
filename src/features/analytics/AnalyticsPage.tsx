@@ -3,7 +3,10 @@ import { useExpenses } from "../expense/useExpenses";
 import { useExercises } from "../exercise/useExercises";
 import { useLearnings } from "../learning/useLearnings";
 import { useCreativeProjects } from "../creative/useCreativeProjects";
+import { useReadings } from "../reading/useReadings";
+import { useWeightLogs } from "../profile/useWeightLogs";
 import AnalyticsChart from "../../components/Analytics/AnalyticsChart";
+import WeightTrendChart from "../../components/Analytics/WeightTrendChart";
 import {
   aggregateByPeriod,
   generateInsight,
@@ -36,6 +39,8 @@ export default function AnalyticsPage() {
   const { exercises } = useExercises();
   const { learnings } = useLearnings();
   const { projects } = useCreativeProjects();
+  const { readings } = useReadings();
+  const { logs: weightLogs } = useWeightLogs();
 
   // ---- Money: total pengeluaran ----
   const expenseSeries = useMemo(
@@ -94,6 +99,18 @@ export default function AnalyticsPage() {
   const uploadToday = projects.filter(
     (p) => p.tanggal_upload && isToday(p.tanggal_upload),
   ).length;
+
+  // ---- Reading: jumlah aktivitas update bacaan ----
+  const readingSeries = useMemo(
+    () =>
+      aggregateByPeriod(
+        readings.map((r) => ({ tanggal: r.tanggal, value: 1 })),
+        granularity,
+        periodsCount,
+      ),
+    [readings, granularity, periodsCount],
+  );
+  const readingToday = readings.filter((r) => isToday(r.tanggal)).length;
 
   const calcTotal = (s: { value: number }[]) =>
     s.reduce((sum, i) => sum + i.value, 0);
@@ -165,6 +182,24 @@ export default function AnalyticsPage() {
         average={calcAvg(uploadSeries)}
         insight={generateInsight(uploadSeries, "", "Jumlah upload")}
       />
+
+      <AnalyticsChart
+        title="📚 Reading — Aktivitas Baca"
+        series={readingSeries}
+        color="#3b82f6"
+        unit=""
+        today={readingToday}
+        total={calcTotal(readingSeries)}
+        average={calcAvg(readingSeries)}
+        insight={generateInsight(readingSeries, "", "Aktivitas membaca")}
+      />
+
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 space-y-3">
+        <h3 className="font-semibold text-gray-900 dark:text-white">
+          ⚖️ Tren Berat Badan
+        </h3>
+        <WeightTrendChart logs={weightLogs} />
+      </div>
     </div>
   );
 }

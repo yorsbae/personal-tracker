@@ -37,9 +37,11 @@ import { useProfile } from "./features/profile/useProfile";
 // function ComingSoon({ nama }: { nama: string }) {
 //   return (
 //     <div className="p-8 text-center">
-//       <p className="text-gray-400 dark:text-gray-500">{nama} — akan dibangun di step berikutnya</p>
+//       <p className="text-gray-400 dark:text-gray-500">
+//         {nama} — akan dibangun di step berikutnya
+//       </p>
 //     </div>
-//   )
+//   );
 // }
 
 function withLayout(element: ReactNode) {
@@ -62,7 +64,8 @@ function OnboardingGate() {
     if (loading) return;
     const publicPaths = ["/login", "/register", "/onboarding"];
     if (publicPaths.includes(location.pathname)) return;
-    if (profile && profile.onboarding_done === false) {
+    // Redirect ke onboarding kalau: belum pernah isi onboarding, ATAU belum ada row profile sama sekali
+    if (!profile || profile.onboarding_done === false) {
       navigate("/onboarding");
     }
   }, [profile, loading, location.pathname]);

@@ -38,11 +38,7 @@ export default function MindGrowthPage() {
         ))}
       </div>
 
-      {tab === "learning" && (
-        <div className="-mx-4 -mt-2">
-          <LearningPage />
-        </div>
-      )}
+      {tab === "learning" && <LearningPage embedded />}
       {tab === "journal" && <JournalPage />}
       {tab === "reading" && <ReadingTab />}
       {tab === "review" && <WeeklyReviewTab />}

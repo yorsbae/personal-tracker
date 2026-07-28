@@ -43,18 +43,8 @@ export default function MoneyPage() {
       {tab === "ringkasan" && <MoneyRingkasanTab />}
       {tab === "wishlist" && <WishlistTab />}
       {tab === "recurring" && <RecurringExpenseTab />}
-      {/* ExpensePage & IncomePage sudah punya <div className="max-w-2xl mx-auto p-4"> sendiri,
-          jadi di sini kita bungkus ulang tanpa padding ganda */}
-      {tab === "expense" && (
-        <div className="-mx-4">
-          <ExpensePage />
-        </div>
-      )}
-      {tab === "income" && (
-        <div className="-mx-4">
-          <IncomePage />
-        </div>
-      )}
+      {tab === "expense" && <ExpensePage embedded />}
+      {tab === "income" && <IncomePage embedded />}
     </div>
   );
 }

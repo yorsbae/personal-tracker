@@ -13,7 +13,11 @@ const initialForm: LearningInput = {
 const inputClass =
   "w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500";
 
-export default function LearningPage() {
+interface LearningPageProps {
+  embedded?: boolean;
+}
+
+export default function LearningPage({ embedded = false }: LearningPageProps) {
   const { learnings, loading, addLearning, updateLearning, deleteLearning } =
     useLearnings();
   const [editing, setEditing] = useState<Learning | null>(null);
@@ -31,7 +35,6 @@ export default function LearningPage() {
       tanggal: learning.tanggal,
     });
   };
-
   const cancelEdit = () => {
     setEditing(null);
     setForm(initialForm);
@@ -41,17 +44,14 @@ export default function LearningPage() {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-
     const result = editing
       ? await updateLearning(editing.id, form)
       : await addLearning(form);
-
     if (result.error) {
       setError(result.error);
       setIsSubmitting(false);
       return;
     }
-
     setEditing(null);
     setForm(initialForm);
     setIsSubmitting(false);
@@ -62,10 +62,12 @@ export default function LearningPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 space-y-6">
-      <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-        Pembelajaran
-      </h1>
+    <div className={embedded ? "space-y-6" : "max-w-2xl mx-auto p-4 space-y-6"}>
+      {!embedded && (
+        <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+          Pembelajaran
+        </h1>
+      )}
 
       <form
         onSubmit={handleSubmit}

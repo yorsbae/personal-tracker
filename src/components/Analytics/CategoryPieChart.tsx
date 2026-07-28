@@ -60,13 +60,8 @@ export default function CategoryPieChart({ data }: CategoryPieChartProps) {
             ))}
           </Pie>
           <Tooltip
-            formatter={(value) => {
-              if (typeof value === "number") {
-                return formatRupiah(value);
-              }
-
-              return value ?? "";
-            }}
+            formatter={(value) => formatRupiah(Number(value))}
+            contentStyle={{ fontSize: 12, borderRadius: 8 }}
           />
           <Legend wrapperStyle={{ fontSize: 12 }} />
         </PieChart>

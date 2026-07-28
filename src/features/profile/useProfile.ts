@@ -23,7 +23,11 @@ export function useProfile() {
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = useCallback(async () => {
-    if (!user) return;
+    if (!user) {
+      setProfile(null);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     const { data, error } = await supabase
       .from("profiles")

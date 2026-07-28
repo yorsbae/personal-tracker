@@ -4,7 +4,19 @@ import IncomeForm from "./IncomeForm";
 import IncomeList from "./IncomeList";
 import type { Income, IncomeInput } from "../../types";
 
-export default function IncomePage() {
+interface IncomePageProps {
+  embedded?: boolean;
+}
+
+function formatRupiah(n: number) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(n);
+}
+
+export default function IncomePage({ embedded = false }: IncomePageProps) {
   const { incomes, loading, addIncome, updateIncome, deleteIncome } =
     useIncomes();
   const [editingIncome, setEditingIncome] = useState<Income | null>(null);
@@ -28,34 +40,37 @@ export default function IncomePage() {
     })
     .reduce((sum, i) => sum + i.nominal, 0);
 
-  return (
-    <div className="max-w-2xl mx-auto p-4 space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-900">Pemasukan</h1>
-        <p className="text-sm text-gray-500">
-          Total bulan ini:{" "}
-          <span className="font-semibold text-green-600">
-            {new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-            }).format(totalBulanIni)}
-          </span>
-        </p>
-      </div>
+  const content = (
+    <>
+      {!embedded && (
+        <div>
+          <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Pemasukan
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Total bulan ini:{" "}
+            <span className="font-semibold text-green-600 dark:text-green-400">
+              {formatRupiah(totalBulanIni)}
+            </span>
+          </p>
+        </div>
+      )}
 
       <IncomeForm
         onSubmit={handleSubmit}
         editingIncome={editingIncome}
         onCancelEdit={() => setEditingIncome(null)}
       />
-
       <IncomeList
         incomes={incomes}
         loading={loading}
         onEdit={setEditingIncome}
         onDelete={deleteIncome}
       />
-    </div>
+    </>
   );
+
+  if (embedded) return <div className="space-y-6">{content}</div>;
+
+  return <div className="max-w-2xl mx-auto p-4 space-y-6">{content}</div>;
 }

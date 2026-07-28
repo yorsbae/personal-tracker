@@ -12,10 +12,12 @@ import { exportAllData } from "../../utils/exportData";
 import { supabase } from "../../lib/supabase";
 import NotificationSettings from "./NotificationSettings";
 import CustomizeMenuSettings from "../../components/CustomizeMenuSettings";
+import WeightHistorySection from "./WeightHistorySection";
+import { useWeightLogs } from "./useWeightLogs";
 
 const initialForm: ProfileInput = {
-  username: null,
   nama: "",
+  username: null,
   umur: null,
   jenis_kelamin: "Pria",
   tinggi_badan: null,
@@ -53,8 +55,8 @@ export default function ProfilePage() {
   useEffect(() => {
     if (profile) {
       setForm({
-        username: profile.username,
         nama: profile.nama,
+        username: profile.username,
         umur: profile.umur,
         jenis_kelamin: profile.jenis_kelamin ?? "Pria",
         tinggi_badan: profile.tinggi_badan,
@@ -76,15 +78,18 @@ export default function ProfilePage() {
     setTimeout(() => setSaveMessage(""), 2000);
   };
 
+  const { latestWeight } = useWeightLogs();
+  const beratUntukKalkulasi = latestWeight ?? form.berat_badan;
+
   const canCalculate =
-    form.berat_badan && form.tinggi_badan && form.umur && form.jenis_kelamin;
+    beratUntukKalkulasi && form.tinggi_badan && form.umur && form.jenis_kelamin;
   const bmi = canCalculate
-    ? calculateBMI(form.berat_badan!, form.tinggi_badan!)
+    ? calculateBMI(beratUntukKalkulasi!, form.tinggi_badan!)
     : null;
   const bmiCategory = bmi ? getBMICategory(bmi) : null;
   const bmr = canCalculate
     ? calculateBMR(
-        form.berat_badan!,
+        beratUntukKalkulasi!,
         form.tinggi_badan!,
         form.umur!,
         form.jenis_kelamin!,
@@ -347,6 +352,8 @@ export default function ProfilePage() {
           )}
         </div>
       </div>
+
+      <WeightHistorySection />
 
       {/* BMI/BMR/TDEE */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">

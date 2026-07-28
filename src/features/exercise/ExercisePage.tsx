@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useExercises } from "./useExercises";
 import ExerciseScheduleTab from "./ExerciseScheduleTab";
+import CoachingTab from "./CoachingTab";
 import {
   EXERCISE_TIPE_PRESETS,
   DISTANCE_BASED_TYPES,
@@ -22,7 +23,7 @@ const initialForm: ExerciseInput = {
 };
 
 export default function ExercisePage() {
-  const [pageTab, setPageTab] = useState<"log" | "jadwal">("log");
+  const [pageTab, setPageTab] = useState<"log" | "jadwal" | "coaching">("log");
   const { exercises, loading, addExercise, updateExercise, deleteExercise } =
     useExercises();
   const [editing, setEditing] = useState<Exercise | null>(null);
@@ -145,9 +146,17 @@ export default function ExercisePage() {
         >
           Jadwal Mingguan
         </button>
+        <button
+          onClick={() => setPageTab("coaching")}
+          className={`px-3 py-2 text-sm font-medium border-b-2 ${pageTab === "coaching" ? "border-gray-900 dark:border-white text-gray-900 dark:text-white" : "border-transparent text-gray-400"}`}
+        >
+          Coaching
+        </button>
       </div>
 
-      {pageTab === "jadwal" ? (
+      {pageTab === "coaching" ? (
+        <CoachingTab />
+      ) : pageTab === "jadwal" ? (
         <ExerciseScheduleTab />
       ) : (
         <>

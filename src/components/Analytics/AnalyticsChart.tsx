@@ -84,7 +84,7 @@ export default function AnalyticsChart({
             />
             <Tooltip
               formatter={(value) => [
-                `${formatNumber(Number(value ?? 0))}${unit}`,
+                `${formatNumber(Number(value))}${unit}`,
                 "",
               ]}
               contentStyle={{ fontSize: 12, borderRadius: 8 }}

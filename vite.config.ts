@@ -15,6 +15,10 @@ export default defineConfig({
       injectManifest: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
       },
+      devOptions: {
+        enabled: true, // Service Worker ikut aktif di `npm run dev`, tidak perlu build+preview tiap tes
+        type: "module",
+      },
       manifest: {
         name: "Life OS",
         short_name: "LifeOS",
