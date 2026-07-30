@@ -10,7 +10,7 @@ import {
 } from "../../utils/bodyCalculations";
 import { exportAllData } from "../../utils/exportData";
 import { supabase } from "../../lib/supabase";
-import NotificationSettings from "./NotificationSettings";
+// import NotificationSettings from './NotificationSettings' // disembunyikan sementara - masih sering error tergantung environment browser/device
 import CustomizeMenuSettings from "../../components/CustomizeMenuSettings";
 import WeightHistorySection from "./WeightHistorySection";
 import { useWeightLogs } from "./useWeightLogs";
@@ -297,20 +297,20 @@ export default function ProfilePage() {
           <label className="block text-xs font-medium text-gray-500 dark:text-gray-400">
             Username (untuk login)
           </label>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2">
             <input
               type="text"
               value={usernameInput}
               onChange={(e) => setUsernameInput(e.target.value)}
-              className={inputClass + " flex-1"}
+              className={inputClass}
               placeholder="username"
             />
             <button
               onClick={handleSaveUsername}
               disabled={isSavingUsername}
-              className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg text-sm"
+              className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg text-sm w-full"
             >
-              {isSavingUsername ? "..." : "Simpan"}
+              {isSavingUsername ? "..." : "Simpan Username"}
             </button>
           </div>
           {usernameMsg && (
@@ -461,7 +461,7 @@ export default function ProfilePage() {
 
       <CustomizeMenuSettings />
 
-      <NotificationSettings />
+      {/* <NotificationSettings /> */}
 
       {/* Export Data */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 space-y-2">

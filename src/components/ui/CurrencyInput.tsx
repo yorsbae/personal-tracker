@@ -31,7 +31,7 @@ export default function CurrencyInput({
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">
         Rp
       </span>

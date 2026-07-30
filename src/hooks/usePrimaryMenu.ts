@@ -11,11 +11,14 @@ export const ALL_MENU_OPTIONS: MenuOption[] = [
   { path: "/money", label: "Money", icon: "💰" },
   { path: "/exercises", label: "Body", icon: "💪" },
   { path: "/mind-growth", label: "Mind & Growth", icon: "🧠" },
-  { path: "/creative", label: "Creative", icon: "🎬" },
   { path: "/notes", label: "Notes", icon: "📝" },
-  { path: "/projects", label: "Projects", icon: "🛠️" },
-  { path: "/calendar", label: "Calendar", icon: "🗓" },
+  { path: "/projects", label: "Project Tracker", icon: "🛠️" },
+  { path: "/social-accounts", label: "Social Accounts", icon: "📱" },
+  { path: "/goals", label: "Goals", icon: "🎯" },
+  { path: "/achievements", label: "Achievements", icon: "🏆" },
   { path: "/analytics", label: "Analytics", icon: "📊" },
+  { path: "/calendar", label: "Calendar", icon: "📅" },
+  { path: "/creative", label: "Creative", icon: "🎨" },
 ];
 
 const DEFAULT_PRIMARY_PATHS = ["/", "/money", "/calendar", "/creative"];

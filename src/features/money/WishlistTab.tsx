@@ -205,12 +205,12 @@ export default function WishlistTab() {
                 key={w.id}
                 className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4"
               >
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <span className="font-medium text-gray-900 dark:text-white">
+                <div className="flex justify-between items-start mb-2 gap-2">
+                  <div className="flex-1 min-w-0">
+                    <span className="font-medium text-gray-900 dark:text-white wrap-break-word">
                       {w.judul}
                     </span>
-                    <div className="flex gap-2 mt-1">
+                    <div className="flex flex-wrap gap-2 mt-1">
                       <span className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
                         {w.kategori}
                       </span>

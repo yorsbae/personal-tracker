@@ -14,6 +14,7 @@ const menuItems = [
   { path: "/creative", label: "Creative Brain" },
   { path: "/notes", label: "Notes" },
   { path: "/projects", label: "Projects" },
+  { path: "/social-accounts", label: "Social Accounts" },
   { path: "/calendar", label: "Calendar" },
   { path: "/analytics", label: "Analytics" },
   { path: "/profile", label: "Profile" },

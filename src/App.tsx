@@ -29,6 +29,7 @@ import ProfilePage from "./features/profile/ProfilePage";
 import DevProjectsPage from "./features/devprojects/DevProjectsPage";
 import FocusModePage from "./features/focus/FocusModePage";
 import GoalsPage from "./features/goals/GoalsPage";
+import SocialAccountsPage from "./features/socialaccounts/SocialAccountsPage";
 import AchievementsPage from "./features/achievements/AchievementsPage";
 import OnboardingPage from "./features/onboarding/OnboardingPage";
 import { useProfile } from "./features/profile/useProfile";
@@ -110,6 +111,10 @@ function AppContent() {
         <Route path="/profile" element={withLayout(<ProfilePage />)} />
         <Route path="/projects" element={withLayout(<DevProjectsPage />)} />
         <Route path="/goals" element={withLayout(<GoalsPage />)} />
+        <Route
+          path="/social-accounts"
+          element={withLayout(<SocialAccountsPage />)}
+        />
         <Route
           path="/achievements"
           element={withLayout(<AchievementsPage />)}

@@ -24,12 +24,12 @@ export default function MoneyPage() {
         Money
       </h1>
 
-      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
         {TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`px-3 py-2 text-sm font-medium border-b-2 transition ${
+            className={`px-3 py-2 text-sm font-medium border-b-2 transition whitespace-nowrap shrink-0 ${
               tab === t.key
                 ? "border-gray-900 dark:border-white text-gray-900 dark:text-white"
                 : "border-transparent text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"

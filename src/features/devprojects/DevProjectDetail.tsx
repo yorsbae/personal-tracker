@@ -78,12 +78,12 @@ export default function DevProjectDetail({
         </select>
       </div>
 
-      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
         {(["log", "todo", "issue"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`px-3 py-2 text-sm font-medium border-b-2 ${tab === t ? "border-gray-900 dark:border-white text-gray-900 dark:text-white" : "border-transparent text-gray-400"}`}
+            className={`px-3 py-2 text-sm font-medium border-b-2 whitespace-nowrap shrink-0 ${tab === t ? "border-gray-900 dark:border-white text-gray-900 dark:text-white" : "border-transparent text-gray-400"}`}
           >
             {t === "log"
               ? "Log Harian"

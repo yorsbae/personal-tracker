@@ -133,22 +133,22 @@ export default function ExercisePage() {
         Latihan
       </h1>
 
-      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-1 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
         <button
           onClick={() => setPageTab("log")}
-          className={`px-3 py-2 text-sm font-medium border-b-2 ${pageTab === "log" ? "border-gray-900 dark:border-white text-gray-900 dark:text-white" : "border-transparent text-gray-400"}`}
+          className={`px-3 py-2 text-sm font-medium border-b-2 whitespace-nowrap shrink-0 ${pageTab === "log" ? "border-gray-900 dark:border-white text-gray-900 dark:text-white" : "border-transparent text-gray-400"}`}
         >
           Log Latihan
         </button>
         <button
           onClick={() => setPageTab("jadwal")}
-          className={`px-3 py-2 text-sm font-medium border-b-2 ${pageTab === "jadwal" ? "border-gray-900 dark:border-white text-gray-900 dark:text-white" : "border-transparent text-gray-400"}`}
+          className={`px-3 py-2 text-sm font-medium border-b-2 whitespace-nowrap shrink-0 ${pageTab === "jadwal" ? "border-gray-900 dark:border-white text-gray-900 dark:text-white" : "border-transparent text-gray-400"}`}
         >
           Jadwal Mingguan
         </button>
         <button
           onClick={() => setPageTab("coaching")}
-          className={`px-3 py-2 text-sm font-medium border-b-2 ${pageTab === "coaching" ? "border-gray-900 dark:border-white text-gray-900 dark:text-white" : "border-transparent text-gray-400"}`}
+          className={`px-3 py-2 text-sm font-medium border-b-2 whitespace-nowrap shrink-0 ${pageTab === "coaching" ? "border-gray-900 dark:border-white text-gray-900 dark:text-white" : "border-transparent text-gray-400"}`}
         >
           Coaching
         </button>
