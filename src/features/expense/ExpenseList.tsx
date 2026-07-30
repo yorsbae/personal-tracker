@@ -14,7 +14,6 @@ function formatRupiah(nominal: number) {
     minimumFractionDigits: 0,
   }).format(nominal);
 }
-
 function formatTanggal(tanggal: string) {
   return new Date(tanggal).toLocaleDateString("id-ID", {
     day: "numeric",
@@ -71,7 +70,6 @@ export default function ExpenseList({
               </span>
             )}
           </div>
-
           <div className="flex items-center gap-3 ml-4">
             <span className="font-semibold text-red-600 dark:text-red-400 whitespace-nowrap">
               -{formatRupiah(expense.nominal)}

@@ -1,26 +1,21 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { usePrimaryMenu, ALL_MENU_OPTIONS } from "../hooks/usePrimaryMenu";
 
 interface MoreSheetProps {
   onClose: () => void;
 }
 
-const MODULE_ITEMS = [
-  { path: "/money", label: "Money", icon: "💰" },
-  { path: "/exercises", label: "Body", icon: "💪" },
-  { path: "/mind-growth", label: "Mind & Growth", icon: "🧠" },
-  { path: "/notes", label: "Notes", icon: "📝" },
-  { path: "/projects", label: "Project Tracker", icon: "🛠️" },
-  { path: "/social-accounts", label: "Social Accounts", icon: "📱" },
-  { path: "/goals", label: "Goals", icon: "🎯" },
-  { path: "/achievements", label: "Achievements", icon: "🏆" },
-  { path: "/analytics", label: "Analytics", icon: "📊" },
-  { path: "/calendar", label: "Calendar", icon: "📅" },
-  { path: "/creative", label: "Creative", icon: "🎨" },
-];
-
 export default function MoreSheet({ onClose }: MoreSheetProps) {
   const { signOut, user } = useAuth();
+  const { primaryPaths } = usePrimaryMenu();
+
+  // Tampilkan SEMUA menu yang tidak sedang ada di bottom nav - dijamin lengkap
+  // karena sumbernya sama persis (ALL_MENU_OPTIONS) dengan yang dipakai Customize Menu.
+  // Tidak akan ada lagi kasus "menu baru lupa didaftarkan di 2 tempat beda".
+  const secondaryItems = ALL_MENU_OPTIONS.filter(
+    (item) => !primaryPaths.includes(item.path),
+  );
 
   return (
     <div
@@ -39,7 +34,7 @@ export default function MoreSheet({ onClose }: MoreSheetProps) {
               Modul
             </p>
             <div className="grid grid-cols-3 gap-2">
-              {MODULE_ITEMS.map((item) => (
+              {secondaryItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
@@ -53,6 +48,11 @@ export default function MoreSheet({ onClose }: MoreSheetProps) {
                 </Link>
               ))}
             </div>
+            {secondaryItems.length === 0 && (
+              <p className="text-xs text-gray-400 text-center py-4">
+                Semua modul sudah ada di navigasi bawah.
+              </p>
+            )}
           </div>
 
           <div className="border-t border-gray-200 dark:border-gray-700 pt-3">

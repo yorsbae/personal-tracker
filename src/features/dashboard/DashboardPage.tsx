@@ -1,7 +1,7 @@
 import { useAuth } from "../../context/AuthContext";
 import { useProfile } from "../profile/useProfile";
 import TodayScheduleWidget from "./widgets/TodayScheduleWidget";
-import FinancialSummaryWidget from "./widgets/FinancialSummaryWidget";
+import RecurringExpenseWidget from "./widgets/RecurringExpenseWidget";
 import ExerciseSummaryWidget from "./widgets/ExerciseSummaryWidget";
 import RecentActivityWidget from "./widgets/RecentActivityWidget";
 import QuickStatsWidget from "./widgets/QuickStatsWidget";
@@ -59,7 +59,7 @@ export default function DashboardPage() {
 
       <div className="grid md:grid-cols-2 gap-4">
         <TodayScheduleWidget />
-        <FinancialSummaryWidget />
+        <RecurringExpenseWidget />
       </div>
 
       <ExercisePlanWidget />
