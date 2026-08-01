@@ -5,6 +5,8 @@ import { useExercises } from "../exercise/useExercises";
 import { useLearnings } from "../learning/useLearnings";
 import { useJournals } from "../journal/useJournals";
 import { useNotes } from "../notes/useNotes";
+import { useTrainingPlan } from "../exercise/useTrainingPlan";
+import { useExerciseSchedule } from "../exercise/useExerciseSchedule";
 import { useEvents } from "./useEvents";
 import { EVENT_TIPE_LABEL, EVENT_TIPE_COLOR } from "../../types";
 
@@ -52,6 +54,8 @@ export default function DaySummaryPanel({
   const { learnings } = useLearnings();
   const { journals } = useJournals();
   const { notes } = useNotes();
+  const { getSessionForDate: getPlanSessionForDate } = useTrainingPlan();
+  const { getScheduleForDate } = useExerciseSchedule();
   const { events } = useEvents();
 
   const feed: FeedItem[] = useMemo(() => {
@@ -142,6 +146,29 @@ export default function DaySummaryPanel({
         });
       });
 
+    // Rencana latihan hari itu - Coaching plan diprioritaskan di atas jadwal mingguan biasa,
+    // sama seperti prioritas yang dipakai widget Dashboard & indikator kotak tanggal
+    const planSession = getPlanSessionForDate(date);
+    const weeklyPlan = getScheduleForDate(date);
+    const plan = planSession ?? weeklyPlan;
+    if (plan) {
+      const isRest = plan.tipe === "Rest";
+      const sudahDicatat =
+        !isRest &&
+        exercises.some(
+          (e) => isSameDay(e.tanggal, date) && e.tipe === plan.tipe,
+        );
+      items.push({
+        id: "rencana-latihan",
+        jam: null,
+        label: planSession ? "Rencana (Coaching)" : "Rencana Latihan",
+        detail: isRest
+          ? "😴 Rest Day"
+          : `${sudahDicatat ? "✅ " : ""}${plan.tipe} - ${plan.sub_kategori}`,
+        color: "#f97316",
+      });
+    }
+
     // Item berjam (event) di atas, sisanya di bawah urut label
     return items.sort((a, b) => {
       if (a.jam && b.jam) return a.jam.localeCompare(b.jam);
@@ -159,6 +186,8 @@ export default function DaySummaryPanel({
     journals,
     notes,
     onEditEvent,
+    getPlanSessionForDate,
+    getScheduleForDate,
   ]);
 
   return (

@@ -26,6 +26,13 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 2.5,
     },
     {
+      hariOffset: 1,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 2,
       tipe: "Running",
       sub_kategori: "Easy Run",
@@ -33,11 +40,32 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 2.5,
     },
     {
+      hariOffset: 3,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
+      hariOffset: 4,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 5,
       tipe: "Running",
       sub_kategori: "Long Run",
       target_durasi: 30,
       target_jarak: 3,
+    },
+    {
+      hariOffset: 6,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
   ],
   [
@@ -49,6 +77,13 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 2.8,
     },
     {
+      hariOffset: 1,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 2,
       tipe: "Running",
       sub_kategori: "Tempo Run",
@@ -56,11 +91,32 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 2.5,
     },
     {
+      hariOffset: 3,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
+      hariOffset: 4,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 5,
       tipe: "Running",
       sub_kategori: "Long Run",
       target_durasi: 32,
       target_jarak: 3.5,
+    },
+    {
+      hariOffset: 6,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
   ],
   [
@@ -70,6 +126,13 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       sub_kategori: "Easy Run",
       target_durasi: 25,
       target_jarak: 3,
+    },
+    {
+      hariOffset: 1,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
     {
       hariOffset: 2,
@@ -79,11 +142,32 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 3,
     },
     {
+      hariOffset: 3,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
+      hariOffset: 4,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 5,
       tipe: "Running",
       sub_kategori: "Long Run",
       target_durasi: 35,
       target_jarak: 4,
+    },
+    {
+      hariOffset: 6,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
   ],
   [
@@ -93,6 +177,13 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       sub_kategori: "Easy Run",
       target_durasi: 25,
       target_jarak: 3,
+    },
+    {
+      hariOffset: 1,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
     {
       hariOffset: 2,
@@ -102,11 +193,32 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 3.2,
     },
     {
+      hariOffset: 3,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
+      hariOffset: 4,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 5,
       tipe: "Running",
       sub_kategori: "Long Run",
       target_durasi: 38,
       target_jarak: 4.5,
+    },
+    {
+      hariOffset: 6,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
   ],
   [
@@ -116,6 +228,13 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       sub_kategori: "Easy Run",
       target_durasi: 25,
       target_jarak: 3.5,
+    },
+    {
+      hariOffset: 1,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
     {
       hariOffset: 2,
@@ -125,11 +244,32 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 4,
     },
     {
+      hariOffset: 3,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
+      hariOffset: 4,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 5,
       tipe: "Running",
       sub_kategori: "Long Run",
       target_durasi: 42,
       target_jarak: 5,
+    },
+    {
+      hariOffset: 6,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
   ],
   [
@@ -141,6 +281,13 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 3.5,
     },
     {
+      hariOffset: 1,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 2,
       tipe: "Running",
       sub_kategori: "Interval",
@@ -148,11 +295,32 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 4,
     },
     {
+      hariOffset: 3,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
+      hariOffset: 4,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 5,
       tipe: "Running",
       sub_kategori: "Long Run",
       target_durasi: 45,
       target_jarak: 5,
+    },
+    {
+      hariOffset: 6,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
   ],
   [
@@ -164,6 +332,13 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 2.5,
     },
     {
+      hariOffset: 1,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 2,
       tipe: "Running",
       sub_kategori: "Easy Run",
@@ -171,11 +346,32 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 2,
     },
     {
+      hariOffset: 3,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
+      hariOffset: 4,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 5,
       tipe: "Running",
       sub_kategori: "Long Run",
       target_durasi: 25,
       target_jarak: 3,
+    },
+    {
+      hariOffset: 6,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
   ],
   [
@@ -187,11 +383,39 @@ const TEMPLATE_5K: SessionTemplate[][] = [
       target_jarak: 2,
     },
     {
+      hariOffset: 1,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
+      hariOffset: 2,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
       hariOffset: 3,
       tipe: "Running",
       sub_kategori: "Easy Run",
       target_durasi: 10,
       target_jarak: 1.5,
+    },
+    {
+      hariOffset: 4,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    },
+    {
+      hariOffset: 5,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
     },
     {
       hariOffset: 6,
@@ -204,6 +428,24 @@ const TEMPLATE_5K: SessionTemplate[][] = [
 ];
 
 // ============ 21K / Half Marathon (14 minggu) - skala lebih panjang & jarak lebih jauh dari 5K ============
+// Helper: isi otomatis hari-hari yang tidak disebut jadi Rest Day, supaya tiap minggu selalu genap 7 hari
+function fillRestDays(sessions: SessionTemplate[]): SessionTemplate[] {
+  const filled = [...sessions];
+  const usedOffsets = new Set(sessions.map((s) => s.hariOffset));
+  for (let hari = 0; hari <= 6; hari++) {
+    if (!usedOffsets.has(hari)) {
+      filled.push({
+        hariOffset: hari,
+        tipe: "Rest",
+        sub_kategori: "Rest Day",
+        target_durasi: 0,
+        target_jarak: null,
+      });
+    }
+  }
+  return filled.sort((a, b) => a.hariOffset - b.hariOffset);
+}
+
 const TEMPLATE_21K: SessionTemplate[][] = (() => {
   const weeks: SessionTemplate[][] = [];
   // Progresi long run: 6 -> 18km selama 12 minggu, lalu taper 2 minggu
@@ -212,35 +454,37 @@ const TEMPLATE_21K: SessionTemplate[][] = (() => {
   ];
   for (let w = 0; w < 14; w++) {
     const isTaper = w >= 12;
-    weeks.push([
-      {
-        hariOffset: 0,
-        tipe: "Running",
-        sub_kategori: "Easy Run",
-        target_durasi: isTaper ? 25 : 35,
-        target_jarak: isTaper ? 4 : 5,
-      },
-      {
-        hariOffset: 2,
-        tipe: "Running",
-        sub_kategori: w % 2 === 0 ? "Tempo Run" : "Interval",
-        target_durasi: isTaper ? 20 : 35,
-        target_jarak: isTaper ? 3 : 6,
-      },
-      {
-        hariOffset: 5,
-        tipe: "Running",
-        sub_kategori: "Long Run",
-        target_durasi: longRunProgression[w] * 6,
-        target_jarak: longRunProgression[w],
-      },
-    ]);
+    weeks.push(
+      fillRestDays([
+        {
+          hariOffset: 0,
+          tipe: "Running",
+          sub_kategori: "Easy Run",
+          target_durasi: isTaper ? 25 : 35,
+          target_jarak: isTaper ? 4 : 5,
+        },
+        {
+          hariOffset: 2,
+          tipe: "Running",
+          sub_kategori: w % 2 === 0 ? "Tempo Run" : "Interval",
+          target_durasi: isTaper ? 20 : 35,
+          target_jarak: isTaper ? 3 : 6,
+        },
+        {
+          hariOffset: 5,
+          tipe: "Running",
+          sub_kategori: "Long Run",
+          target_durasi: longRunProgression[w] * 6,
+          target_jarak: longRunProgression[w],
+        },
+      ]),
+    );
   }
   return weeks;
 })();
 
 // ============ Fat Burner (ongoing, cardio frekuensi tinggi, durasi sedang) ============
-const TEMPLATE_FAT_BURNER: SessionTemplate[] = [
+const TEMPLATE_FAT_BURNER: SessionTemplate[] = fillRestDays([
   {
     hariOffset: 0,
     tipe: "Running",
@@ -270,10 +514,10 @@ const TEMPLATE_FAT_BURNER: SessionTemplate[] = [
     target_durasi: 25,
     target_jarak: 3,
   },
-];
+]);
 
 // ============ Hiking Prep (fokus daya tahan kaki, bukan kecepatan) ============
-const TEMPLATE_HIKING: SessionTemplate[] = [
+const TEMPLATE_HIKING: SessionTemplate[] = fillRestDays([
   {
     hariOffset: 0,
     tipe: "Strength",
@@ -303,10 +547,10 @@ const TEMPLATE_HIKING: SessionTemplate[] = [
     target_durasi: 45,
     target_jarak: 5,
   },
-];
+]);
 
 // ============ Plyometric (ledakan/explosive power, sesi pendek intens) ============
-const TEMPLATE_PLYOMETRIC: SessionTemplate[] = [
+const TEMPLATE_PLYOMETRIC: SessionTemplate[] = fillRestDays([
   {
     hariOffset: 0,
     tipe: "Plyometric",
@@ -331,10 +575,10 @@ const TEMPLATE_PLYOMETRIC: SessionTemplate[] = [
     target_jarak: null,
     gerakan: "Burpees, Broad Jump, Skater Jump",
   },
-];
+]);
 
 // ============ General Fitness (Push/Pull/Legs dengan nama gerakan) ============
-const TEMPLATE_GENERAL: SessionTemplate[] = [
+const TEMPLATE_GENERAL: SessionTemplate[] = fillRestDays([
   {
     hariOffset: 0,
     tipe: "Strength",
@@ -359,7 +603,7 @@ const TEMPLATE_GENERAL: SessionTemplate[] = [
     target_jarak: null,
     gerakan: "Squat, Romanian Deadlift, Lunges, Calf Raise",
   },
-];
+]);
 
 export function getWeekTemplate(
   tipe: PlanTipe,
@@ -373,6 +617,58 @@ export function getWeekTemplate(
   if (tipe === "hiking") return TEMPLATE_HIKING;
   if (tipe === "plyometric") return TEMPLATE_PLYOMETRIC;
   return TEMPLATE_GENERAL;
+}
+
+/**
+ * Petakan ulang template mingguan (yang defaultnya sudah punya Rest day sendiri)
+ * ke hari Rest PILIHAN USER. Sesi latihan inti dari program tetap dipakai,
+ * cuma posisi harinya + jumlah "sesi tambahan" (kalau training day lebih banyak
+ * dari sesi inti program) yang menyesuaikan.
+ */
+export function remapWeekToRestDays(
+  weekTemplate: SessionTemplate[],
+  hariIstirahat: number[],
+): SessionTemplate[] {
+  const workouts = weekTemplate.filter((s) => s.tipe !== "Rest");
+  const trainingDayOffsets = [0, 1, 2, 3, 4, 5, 6].filter(
+    (d) => !hariIstirahat.includes(d),
+  );
+
+  const result: SessionTemplate[] = [];
+
+  trainingDayOffsets.forEach((dayOffset, i) => {
+    if (i < workouts.length) {
+      // Sesi inti program, dipasang urut sesuai prioritas aslinya
+      result.push({ ...workouts[i], hariOffset: dayOffset });
+    } else if (workouts.length > 0) {
+      // Training day lebih banyak dari sesi inti program - isi hari sisa dengan
+      // "sesi tambahan" (ulang salah satu tipe latihan yang sudah ada, ditandai jelas)
+      const fillerSource = workouts[i % workouts.length];
+      result.push({
+        ...fillerSource,
+        hariOffset: dayOffset,
+        sub_kategori: `${fillerSource.sub_kategori} (Tambahan)`,
+        target_durasi: fillerSource.target_durasi
+          ? Math.round(fillerSource.target_durasi * 0.7)
+          : null,
+        target_jarak: fillerSource.target_jarak
+          ? Math.round(fillerSource.target_jarak * 0.7 * 10) / 10
+          : null,
+      });
+    }
+  });
+
+  hariIstirahat.forEach((dayOffset) => {
+    result.push({
+      hariOffset: dayOffset,
+      tipe: "Rest",
+      sub_kategori: "Rest Day",
+      target_durasi: 0,
+      target_jarak: null,
+    });
+  });
+
+  return result.sort((a, b) => a.hariOffset - b.hariOffset);
 }
 
 export const PLAN_LABELS: Record<

@@ -9,6 +9,7 @@ import { useExpenses } from "../expense/useExpenses";
 import { useIncomes } from "../income/useIncomes";
 import { useExercises } from "../exercise/useExercises";
 import { useExerciseSchedule } from "../exercise/useExerciseSchedule";
+import { useTrainingPlan } from "../exercise/useTrainingPlan";
 import EventModal from "./EventModal";
 import DaySummaryPanel from "./DaySummaryPanel";
 import {
@@ -58,6 +59,7 @@ export default function CalendarPage() {
   const { incomes } = useIncomes();
   const { exercises } = useExercises();
   const { getScheduleForDate } = useExerciseSchedule();
+  const { getSessionForDate: getPlanSessionForDate } = useTrainingPlan();
 
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
@@ -161,15 +163,24 @@ export default function CalendarPage() {
   const CustomDateHeader = useCallback(
     ({ date: cellDate, label }: { date: Date; label: string }) => {
       const ind = indicatorByDate[dateKey(cellDate)];
-      const plan = getScheduleForDate(cellDate);
+      const planSession = getPlanSessionForDate(cellDate);
+      const weeklyPlan = getScheduleForDate(cellDate);
+      const plan = planSession ?? weeklyPlan;
+      const isFromCoaching = !!planSession;
       const showPlan =
         plan &&
         plan.tipe !== "Rest" &&
         !ind?.runningKm &&
-        !ind?.otherExerciseCount; // jangan tampil kalau sudah ada log asli hari itu
+        !ind?.otherExerciseCount;
 
       return (
-        <div className="flex flex-col items-end px-1 pt-1 gap-0.5 text-[10px] leading-tight">
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedDate(cellDate);
+          }}
+          className="flex flex-col items-end px-1 pt-1 pb-1 gap-0.5 text-[10px] leading-tight cursor-pointer active:bg-gray-100 dark:active:bg-gray-700 rounded touch-manipulation"
+        >
           <span className="text-xs">{label}</span>
           {ind?.income > 0 && (
             <span className="text-green-600 dark:text-green-400 font-medium">
@@ -193,13 +204,13 @@ export default function CalendarPage() {
           )}
           {showPlan && (
             <span className="text-gray-400 dark:text-gray-500 italic">
-              rencana: {plan.tipe}
+              {isFromCoaching ? "🎯 " : ""}rencana: {plan.tipe}
             </span>
           )}
         </div>
       );
     },
-    [indicatorByDate, getScheduleForDate],
+    [indicatorByDate, getScheduleForDate, getPlanSessionForDate],
   );
 
   return (

@@ -3,6 +3,9 @@ import { useMoneySummary } from "../../money/useMoneySummary";
 import { useExercises } from "../../exercise/useExercises";
 import { useJournals } from "../../journal/useJournals";
 import { useCreativeProjects } from "../../creative/useCreativeProjects";
+import { useRecurringExpenses } from "../../money/useRecurringExpenses";
+import { useGoals } from "../../goals/useGoals";
+import { useWeeklyReview } from "../../weeklyreview/useWeeklyReview";
 
 export interface Reminder {
   id: string;
@@ -27,6 +30,9 @@ export function useReminders(): Reminder[] {
   const { exercises } = useExercises();
   const { journals } = useJournals();
   const { projects } = useCreativeProjects();
+  const { items: recurringItems } = useRecurringExpenses();
+  const { goals, getProgress } = useGoals();
+  const { review: weekReview } = useWeeklyReview();
 
   return useMemo(() => {
     const reminders: Reminder[] = [];
@@ -114,6 +120,67 @@ export function useReminders(): Reminder[] {
         }
       });
 
+    // 5. Recurring expense yang jatuh tempo dalam 3 hari
+    const todayDate = new Date().getDate();
+    recurringItems
+      .filter((r) => r.aktif)
+      .forEach((r) => {
+        let daysUntil = r.tanggal_jatuh_tempo - todayDate;
+        if (daysUntil < 0) daysUntil += 30; // kasar, cukup untuk reminder (bukan kalkulasi presisi kalender)
+        if (daysUntil <= 3) {
+          reminders.push({
+            id: `recurring-${r.id}`,
+            message: `"${r.nama}" jatuh tempo ${daysUntil === 0 ? "HARI INI" : `${daysUntil} hari lagi`} (Rp${r.nominal.toLocaleString("id-ID")})`,
+            severity: "info",
+            icon: "🔁",
+            link: "/money",
+          });
+        }
+      });
+
+    // 6. Goal mendekati deadline (<= 3 hari) dan belum tercapai
+    goals
+      .filter((g) => g.status === "Aktif" && g.tanggal_target)
+      .forEach((g) => {
+        const target = new Date(g.tanggal_target!);
+        const diffDays = Math.ceil(
+          (target.getTime() - now.getTime()) / 86400000,
+        );
+        const current = getProgress(g);
+        if (current < g.target_value && diffDays <= 3 && diffDays >= 0) {
+          reminders.push({
+            id: `goal-${g.id}`,
+            message: `Goal "${g.judul}" deadline ${diffDays === 0 ? "HARI INI" : `${diffDays} hari lagi`} (baru ${current}/${g.target_value})`,
+            severity: "warning",
+            icon: "🎯",
+            link: "/goals",
+          });
+        }
+      });
+
+    // 7. Weekly Review belum diisi kalau sudah Jumat-Minggu (waktu wajar buat mulai refleksi minggu ini)
+    const hariIni = now.getDay(); // 0=Minggu, 5=Jumat, 6=Sabtu
+    const sudahAkhirMinggu = hariIni === 0 || hariIni === 5 || hariIni === 6;
+    if (sudahAkhirMinggu && !weekReview) {
+      reminders.push({
+        id: "weekly-review-pending",
+        message: "Belum isi Weekly Review minggu ini",
+        severity: "info",
+        icon: "🗓",
+        link: "/mind-growth",
+      });
+    }
+
     return reminders;
-  }, [target, expensePerKategori, exercises, journals, projects]);
+  }, [
+    target,
+    expensePerKategori,
+    exercises,
+    journals,
+    projects,
+    recurringItems,
+    goals,
+    getProgress,
+    weekReview,
+  ]);
 }

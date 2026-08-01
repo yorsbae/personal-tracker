@@ -9,6 +9,10 @@ import { useExercises } from "../../features/exercise/useExercises";
 import { useCreativeProjects } from "../../features/creative/useCreativeProjects";
 import { useReadings } from "../../features/reading/useReadings";
 import { useDevProjects } from "../../features/devprojects/useDevProjects";
+import { useGoals } from "../../features/goals/useGoals";
+import { useSocialAccounts } from "../../features/socialaccounts/useSocialAccounts";
+import { useWishlists } from "../../features/money/useWishlists";
+import { useWeeklyReview } from "../../features/weeklyreview/useWeeklyReview";
 
 interface SearchResult {
   id: string;
@@ -34,6 +38,10 @@ export default function GlobalSearchModal({ onClose }: GlobalSearchModalProps) {
   const { projects } = useCreativeProjects();
   const { readings } = useReadings();
   const { projects: devProjects } = useDevProjects();
+  const { goals } = useGoals();
+  const { accounts: socialAccounts } = useSocialAccounts();
+  const { wishlists } = useWishlists();
+  const { review: currentWeekReview } = useWeeklyReview();
 
   const results: SearchResult[] = useMemo(() => {
     if (query.trim().length < 2) return [];
@@ -124,6 +132,48 @@ export default function GlobalSearchModal({ onClose }: GlobalSearchModalProps) {
           path: "/projects",
         });
     });
+    goals.forEach((g) => {
+      if (matches(g.judul))
+        out.push({
+          id: `goal-${g.id}`,
+          label: "Goals",
+          detail: g.judul,
+          path: "/goals",
+        });
+    });
+    socialAccounts.forEach((s) => {
+      if (matches(s.username, s.platform, s.niche, s.tujuan))
+        out.push({
+          id: `social-${s.id}`,
+          label: "Social Accounts",
+          detail: `@${s.username} (${s.platform})`,
+          path: "/social-accounts",
+        });
+    });
+    wishlists.forEach((w) => {
+      if (matches(w.judul, w.kategori, w.catatan))
+        out.push({
+          id: `wish-${w.id}`,
+          label: "Wishlist",
+          detail: w.judul,
+          path: "/money",
+        });
+    });
+    if (
+      currentWeekReview &&
+      matches(
+        currentWeekReview.apa_yang_berhasil,
+        currentWeekReview.apa_yang_gagal,
+        currentWeekReview.yang_mau_diubah,
+      )
+    ) {
+      out.push({
+        id: `review-${currentWeekReview.id}`,
+        label: "Weekly Review",
+        detail: "Review minggu ini",
+        path: "/mind-growth",
+      });
+    }
 
     return out.slice(0, 20);
   }, [
@@ -137,6 +187,10 @@ export default function GlobalSearchModal({ onClose }: GlobalSearchModalProps) {
     projects,
     readings,
     devProjects,
+    goals,
+    socialAccounts,
+    wishlists,
+    currentWeekReview,
   ]);
 
   const handleClickResult = (path: string) => {

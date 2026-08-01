@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useExercises } from "./useExercises";
 import {
   getWeekTemplate,
+  remapWeekToRestDays,
   PLAN_LABELS,
   type PlanTipe,
 } from "./trainingTemplates";
@@ -15,6 +16,7 @@ export interface TrainingPlan {
   tipe: PlanTipe;
   durasi_minggu: number;
   tanggal_mulai: string;
+  hari_istirahat: number[];
   status: "Aktif" | "Selesai" | "Dibatalkan";
 }
 
@@ -89,7 +91,11 @@ export function useTrainingPlan() {
   }, [fetchActivePlan]);
 
   // Mulai plan baru: generate minggu 1 langsung, minggu berikutnya di-generate lazy
-  const startPlan = async (tipe: PlanTipe, durasiMinggu: number) => {
+  const startPlan = async (
+    tipe: PlanTipe,
+    durasiMinggu: number,
+    hariIstirahat: number[],
+  ) => {
     if (!user) return { error: "Belum login" };
 
     const tanggalMulai = startOfWeekMonday(new Date());
@@ -103,6 +109,7 @@ export function useTrainingPlan() {
         tipe,
         durasi_minggu: durasiMinggu,
         tanggal_mulai: dateKey(tanggalMulai),
+        hari_istirahat: hariIstirahat,
         status: "Aktif",
       })
       .select()
@@ -126,7 +133,12 @@ export function useTrainingPlan() {
       new Date(planObj.tanggal_mulai),
       (mingguKe - 1) * 7,
     );
-    const template = getWeekTemplate(planObj.tipe, mingguKe);
+    const rawTemplate = getWeekTemplate(planObj.tipe, mingguKe);
+    // Petakan ulang sesuai hari Rest pilihan user (bukan Rest default program)
+    const template = remapWeekToRestDays(
+      rawTemplate,
+      planObj.hari_istirahat ?? [],
+    );
 
     const rows = template.map((t) => ({
       plan_id: planObj.id,
@@ -178,12 +190,19 @@ export function useTrainingPlan() {
       (s) => s.minggu_ke === mingguSekarang - 1,
     );
     let multiplierBaru = 1.0;
-    if (sesiMingguLalu.length > 0) {
-      const multiplierLalu = sesiMingguLalu[0]?.intensity_multiplier ?? 1.0;
-      const selesai = sesiMingguLalu.filter((s) =>
+    // Rest day sengaja TIDAK dihitung di sini - itu bukan sesi yang "harus diselesaikan",
+    // jadi tidak boleh bikin persentase kepatuhan keliatan rendah padahal semua sesi latihan
+    // beneran sudah selesai dijalani
+    const sesiLatihanMingguLalu = sesiMingguLalu.filter(
+      (s) => s.tipe !== "Rest",
+    );
+    if (sesiLatihanMingguLalu.length > 0) {
+      const multiplierLalu =
+        sesiLatihanMingguLalu[0]?.intensity_multiplier ?? 1.0;
+      const selesai = sesiLatihanMingguLalu.filter((s) =>
         exercises.some((e) => e.tanggal === s.tanggal && e.tipe === s.tipe),
       ).length;
-      const persenSelesai = selesai / sesiMingguLalu.length;
+      const persenSelesai = selesai / sesiLatihanMingguLalu.length;
 
       if (persenSelesai >= 0.9)
         multiplierBaru = Math.min(1.3, multiplierLalu + 0.1);

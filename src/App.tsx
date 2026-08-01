@@ -1,12 +1,5 @@
-import { useEffect } from "react";
 import type { ReactNode } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { PinLockProvider, usePinLock } from "./context/PinLockContext";
@@ -32,7 +25,6 @@ import GoalsPage from "./features/goals/GoalsPage";
 import SocialAccountsPage from "./features/socialaccounts/SocialAccountsPage";
 import AchievementsPage from "./features/achievements/AchievementsPage";
 import OnboardingPage from "./features/onboarding/OnboardingPage";
-import { useProfile } from "./features/profile/useProfile";
 
 // Placeholder sementara - akan diganti komponen asli di step berikutnya
 // function ComingSoon({ nama }: { nama: string }) {
@@ -55,22 +47,9 @@ function withLayout(element: ReactNode) {
 
 // Komponen ini nge-cek status lock, ditaruh DI DALAM AuthProvider+PinLockProvider
 // supaya bisa akses context-nya, lalu tampilkan LockScreen di atas semua halaman kalau terkunci
-// Cek status onboarding, arahkan ke /onboarding kalau belum selesai (kecuali sedang di halaman itu sendiri)
+// Auto-redirect ke /onboarding DINONAKTIFKAN sementara (mengganggu UX).
+// Route /onboarding tetap ada dan bisa diakses manual lewat URL kalau suatu saat mau dipakai lagi.
 function OnboardingGate() {
-  const { profile, loading } = useProfile();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (loading) return;
-    const publicPaths = ["/login", "/register", "/onboarding"];
-    if (publicPaths.includes(location.pathname)) return;
-    // Redirect ke onboarding kalau: belum pernah isi onboarding, ATAU belum ada row profile sama sekali
-    if (!profile || profile.onboarding_done === false) {
-      navigate("/onboarding");
-    }
-  }, [profile, loading, location.pathname]);
-
   return null;
 }
 
