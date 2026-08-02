@@ -2,7 +2,7 @@ export interface SessionTemplate {
   hariOffset: number;
   tipe: string;
   sub_kategori: string;
-  target_durasi: number;
+  target_durasi: number | null;
   target_jarak: number | null;
   gerakan?: string; // khusus Strength - daftar gerakan spesifik, dipisah koma
 }
