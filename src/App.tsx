@@ -7,7 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import LockScreen from "./components/LockScreen";
 import Login from "./features/auth/Login";
-import Register from "./features/auth/Register";
+{/*import Register from "./features/auth/Register";*/}
 import ExpensePage from "./features/expense/ExpensePage";
 import IncomePage from "./features/income/IncomePage";
 import ExercisePage from "./features/exercise/ExercisePage";
@@ -24,7 +24,7 @@ import FocusModePage from "./features/focus/FocusModePage";
 import GoalsPage from "./features/goals/GoalsPage";
 import SocialAccountsPage from "./features/socialaccounts/SocialAccountsPage";
 import AchievementsPage from "./features/achievements/AchievementsPage";
-import OnboardingPage from "./features/onboarding/OnboardingPage";
+{/*import OnboardingPage from "./features/onboarding/OnboardingPage";*/}
 
 // Placeholder sementara - akan diganti komponen asli di step berikutnya
 // function ComingSoon({ nama }: { nama: string }) {
