@@ -82,7 +82,7 @@ export default function Login() {
           </button>
         </form>
 
-        <p className="text-sm text-gray-500 dark:text-gray-400 text-center mt-6">
+        /*<p className="text-sm text-gray-500 dark:text-gray-400 text-center mt-6">
           Belum punya akun?{" "}
           <Link
             to="/register"
@@ -90,7 +90,7 @@ export default function Login() {
           >
             Daftar
           </Link>
-        </p>
+        </p>*/
       </div>
     </div>
   );
