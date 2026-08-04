@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
@@ -33,6 +34,7 @@ export default function Login() {
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-1">
           Masuk
         </h1>
+
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
           Masuk ke akun Life OS kamu
         </p>
@@ -48,13 +50,14 @@ export default function Login() {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Username
             </label>
+
             <input
               type="text"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500"
               placeholder="username"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500"
             />
           </div>
 
@@ -62,14 +65,15 @@ export default function Login() {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Password
             </label>
+
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500"
               placeholder="••••••••"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500"
             />
           </div>
 
@@ -82,7 +86,8 @@ export default function Login() {
           </button>
         </form>
 
-        { /*<p className="text-sm text-gray-500 dark:text-gray-400 text-center mt-6">
+        {/*
+        <p className="text-sm text-gray-500 dark:text-gray-400 text-center mt-6">
           Belum punya akun?{" "}
           <Link
             to="/register"
@@ -90,7 +95,8 @@ export default function Login() {
           >
             Daftar
           </Link>
-        </p>*/}
+        </p>
+        */}
       </div>
     </div>
   );
